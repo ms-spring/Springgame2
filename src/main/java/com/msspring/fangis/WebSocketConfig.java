@@ -1,4 +1,4 @@
-package com.example.maventest;
+package com.msspring.fangis;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

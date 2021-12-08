@@ -1,4 +1,4 @@
-package com.example.maventest;
+package com.msspring.fangis;
 
 public class Greeting {
 
