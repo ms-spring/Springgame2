@@ -1,13 +1,13 @@
 package com.msspring.fangis;
 
-public class HelloMessage {
+public class UserNameMessage {
 
     private String name;
 
-    public HelloMessage() {
+    public UserNameMessage() {
     }
 
-    public HelloMessage(String name) {
+    public UserNameMessage(String name) {
         this.name = name;
     }
 
