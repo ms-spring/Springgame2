@@ -13,7 +13,7 @@ import java.util.Map;
 public class MessageController {
 
     @Autowired
-    private Map<String, String> userstatus;
+    private Map<String, String> userStati;
 
 
     @MessageMapping("/hello")
@@ -21,9 +21,9 @@ public class MessageController {
     public Greeting greeting(@Header("simpSessionId") String sessionId, UserNameMessage message) throws Exception {
 
 
-        userstatus.put(message.getName(), "fett");
+        userStati.put(message.getName(), "fett");
 
-        for (Map.Entry entry : userstatus.entrySet()) {
+        for (Map.Entry entry : userStati.entrySet()) {
             System.out.println(entry.getKey());
         }
 

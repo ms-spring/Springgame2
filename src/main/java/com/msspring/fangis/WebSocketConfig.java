@@ -26,9 +26,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     @Bean
-    public Map<String,String> userstatus() {
-        Map<String, String> userstatusmap = new HashMap<>();
-        return userstatusmap;
+    public Map<String,String> userStati() {
+        return new HashMap<>();
     }
 
 }
