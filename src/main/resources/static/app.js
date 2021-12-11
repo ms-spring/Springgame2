@@ -1,3 +1,4 @@
+import { Game } from './game.js'
 
 function setStage(id) {
     $('#stage-connect').toggle(id === 'connect');
@@ -52,6 +53,7 @@ $(window).on('load', () => {
 })
 
 $(function () {
+    new Game();
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
