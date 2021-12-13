@@ -36,11 +36,9 @@ class Player {
             lx = r * Math.cos(theta);
             ly = r * Math.sin(theta);
 
-            if (lx > -o.w / 2 && lx < o.w / 2 && ly > -o.h / 2 && lx < o.h / 2) {
-                let fromLeft = lx + o.w / 2;
-                let fromRight = o.w / 2 - lx;
-                let fromTop = ly + o.h / 2;
-                let fromBottom = o.h / 2 - ly;
+            if (lx > -o.w / 2 && lx < o.w / 2 && ly > -o.h / 2 && ly < o.h / 2) {
+                let fromLeft = lx + o.w / 2, fromRight = o.w / 2 - lx, fromTop = ly + o.h / 2,
+                    fromBottom = o.h / 2 - ly;
                 let mini = Math.min(fromLeft, fromRight, fromTop, fromBottom);
                 if (mini === fromLeft) {
                     lx -= fromLeft;
@@ -88,7 +86,7 @@ export class Game {
         player2.y = 100;
         player2.name = "Omae";
         this.players = [player1, player2];
-        this.obstacles = [new Obstacle(20, 20, 40, 40, 0.2), new Obstacle(500, 400, 100, 10, 0)];
+        this.obstacles = [new Obstacle(200, 200, 100, 100, Math.PI / 4), new Obstacle(500, 400, 100, 10, 0)];
         this.canvas = document.querySelector("#game-canvas");
         this.ctx = this.canvas.getContext("2d");
         this.lastUpdate = null;
@@ -123,10 +121,10 @@ export class Game {
 
         for (let o of this.obstacles) {
             g.save();
-            g.translate(o.x + o.w / 2, o.y + o.h / 2);
+            g.translate(o.x, o.y);
             g.rotate(o.r);
             g.translate(-o.x, -o.y);
-            g.fillRect(o.x, o.y, o.w, o.h);
+            g.fillRect(o.x - o.w / 2, o.y - o.h / 2, o.w, o.h);
             g.restore();
         }
 
