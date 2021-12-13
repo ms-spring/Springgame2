@@ -1,4 +1,5 @@
 const MOVE_NONE = 0, MOVE_LEFT = 1, MOVE_RIGHT = 2, MOVE_UP = 4, MOVE_DOWN = 8;
+const WIDTH = 800, HEIGHT = 600;
 
 class Player {
     constructor() {
@@ -8,19 +9,26 @@ class Player {
         this.move = MOVE_NONE;
     }
 
-    update() {
-        if (this.move & MOVE_LEFT) {
-            this.x -= 2;
+    update(t) {
+        const SPEED = 200, RADIUS = 10;
+
+        // Determine the movement based on flags
+        let dx = 0, dy = 0;
+        if (this.move & MOVE_LEFT) dx = -1;
+        if (this.move & MOVE_RIGHT) dx = 1;
+        if (this.move & MOVE_UP) dy = -1;
+        if (this.move & MOVE_DOWN) dy = 1;
+
+        // Ensure diagonal is as fast as going straight
+        let len = (dx ** 2 + dy ** 2) ** 0.5;
+        if (len > 0) {
+            this.x += dx * SPEED / len * t;
+            this.y += dy * SPEED / len * t;
         }
-        if (this.move & MOVE_RIGHT) {
-            this.x += 2;
-        }
-        if (this.move & MOVE_UP) {
-            this.y -= 2;
-        }
-        if (this.move & MOVE_DOWN) {
-            this.y += 2;
-        }
+
+        // Don't let player escape from window
+        this.x = Math.min(Math.max(this.x, RADIUS), WIDTH - RADIUS);
+        this.y = Math.min(Math.max(this.y, RADIUS), HEIGHT - RADIUS);
     }
 }
 
@@ -48,6 +56,8 @@ export class Game {
         this.obstacles = [new Obstacle(20, 20, 40, 40, 10), new Obstacle(500, 400, 100, 10, 45)];
         this.canvas = document.querySelector("#game-canvas");
         this.ctx = this.canvas.getContext("2d");
+        this.lastUpdate = null;
+
         this.draw();
 
         $(window).on('keydown', (e) => {
@@ -59,15 +69,17 @@ export class Game {
                 | (e.keyCode === 38) * MOVE_UP | (e.keyCode === 40) * MOVE_DOWN);
         });
 
-        window.requestAnimationFrame(() => this.update());
+        window.requestAnimationFrame((t) => this.update(t));
     }
 
-    update() {
+    update(t) {
+        let delta = (t - this.lastUpdate) / 1000;
         for (let p of this.players) {
-            p.update();
+            p.update(delta);
         }
         this.draw();
-        window.requestAnimationFrame(() => this.update());
+        window.requestAnimationFrame((t) => this.update(t));
+        this.lastUpdate = t;
     }
 
     draw() {
