@@ -2,7 +2,8 @@ const MOVE_NONE = 0, MOVE_LEFT = 1, MOVE_RIGHT = 2, MOVE_UP = 4, MOVE_DOWN = 8;
 const WIDTH = 800, HEIGHT = 600;
 
 class Player {
-    constructor() {
+    constructor(game) {
+        this.game = game;
         this.name = "Omae Wa";
         this.x = 0;
         this.y = 0;
@@ -26,6 +27,40 @@ class Player {
             this.y += dy * SPEED / len * t;
         }
 
+        // Check collision
+        for (let o of this.game.obstacles) {
+            let lx = this.x - o.x;
+            let ly = this.y - o.y;
+            let r = (lx ** 2 + ly ** 2) ** 0.5;
+            let theta = Math.atan2(ly, lx) - o.r;
+            lx = r * Math.cos(theta);
+            ly = r * Math.sin(theta);
+
+            if (lx > -o.w / 2 && lx < o.w / 2 && ly > -o.h / 2 && lx < o.h / 2) {
+                let fromLeft = lx + o.w / 2;
+                let fromRight = o.w / 2 - lx;
+                let fromTop = ly + o.h / 2;
+                let fromBottom = o.h / 2 - ly;
+                let mini = Math.min(fromLeft, fromRight, fromTop, fromBottom);
+                if (mini === fromLeft) {
+                    lx -= fromLeft;
+                } else if (mini === fromRight) {
+                    lx += fromRight;
+                } else if (mini === fromTop) {
+                    ly -= fromTop;
+                } else if (mini === fromBottom) {
+                    ly += fromBottom;
+                }
+            }
+
+            r = (lx ** 2 + ly ** 2) ** 0.5;
+            theta = Math.atan2(ly, lx);
+            lx = r * Math.cos(theta + o.r);
+            ly = r * Math.sin(theta + o.r);
+            this.x = o.x + lx;
+            this.y = o.y + ly;
+        }
+
         // Don't let player escape from window
         this.x = Math.min(Math.max(this.x, RADIUS), WIDTH - RADIUS);
         this.y = Math.min(Math.max(this.y, RADIUS), HEIGHT - RADIUS);
@@ -44,16 +79,16 @@ class Obstacle {
 
 export class Game {
     constructor() {
-        let player1 = new Player();
+        let player1 = new Player(this);
         player1.x = 200;
         player1.y = 300;
         player1.name = "Watashi";
-        let player2 = new Player();
+        let player2 = new Player(this);
         player2.x = 500;
         player2.y = 100;
         player2.name = "Omae";
         this.players = [player1, player2];
-        this.obstacles = [new Obstacle(20, 20, 40, 40, 10), new Obstacle(500, 400, 100, 10, 45)];
+        this.obstacles = [new Obstacle(20, 20, 40, 40, 0.2), new Obstacle(500, 400, 100, 10, 0)];
         this.canvas = document.querySelector("#game-canvas");
         this.ctx = this.canvas.getContext("2d");
         this.lastUpdate = null;
@@ -89,7 +124,7 @@ export class Game {
         for (let o of this.obstacles) {
             g.save();
             g.translate(o.x + o.w / 2, o.y + o.h / 2);
-            g.rotate(o.r / 180 * Math.PI);
+            g.rotate(o.r);
             g.translate(-o.x, -o.y);
             g.fillRect(o.x, o.y, o.w, o.h);
             g.restore();
