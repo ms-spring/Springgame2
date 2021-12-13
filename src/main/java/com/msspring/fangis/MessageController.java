@@ -12,8 +12,14 @@ import java.util.Map;
 @Controller
 public class MessageController {
 
-    @Autowired
     private Map<String, String> userStati;
+
+    @Autowired
+    public MessageController(Map<String, String> userStati) {
+        this.userStati = userStati;
+    }
+
+
 
 
     @MessageMapping("/hello")
@@ -29,5 +35,16 @@ public class MessageController {
 
         return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
     }
+
+   @MessageMapping("/update")
+   @SendTo("/game/broadcast")
+   public void updateUser(@Header("simpSessionId") String sessionId, StatusMessage message) throws Exception {
+
+
+
+        return;
+   }
+
+
 
 }
