@@ -1,5 +1,6 @@
 package com.msspring.fangis;
 
+import com.msspring.fangis.exceptions.InvalidSessionException;
 import com.msspring.fangis.exceptions.UserNameAlreadyUsedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
@@ -37,7 +38,7 @@ public class MessageController {
         }
 
         User user = new User(username, message.getLobby());
-        userMapping.put(sessionId,user);
+        userMapping.put(sessionId, user);
 
 
         return;
@@ -45,13 +46,13 @@ public class MessageController {
 
     @MessageMapping("/update")
     @SendTo("/game/broadcast")
-    public void updateUser(@Header("simpSessionId") String sessionId, StatusMessage message) throws Exception {
+    public void updateUser(@Header("simpSessionId") String sessionId, StatusMessage message) throws RuntimeException, InvalidSessionException {
+        if(sessionId.contains("KAKA DIE BOHNE")) {
+            System.out.println("KAKA DIE SAFTI BOHNE KAKA");
+        }
 
-
-
-        return;
+        throw new InvalidSessionException();
     }
-
 
 
 }

@@ -1,11 +1,13 @@
 package com.msspring.fangis;
 
-public class UserNameMessage {
+import javax.validation.constraints.NotEmpty;
 
+public class UserNameMessage {
+    @NotEmpty
     private String name;
     private int lobby;
 
-    public UserNameMessage(String name, int lobby) {
+    public UserNameMessage(@NotEmpty String name, int lobby) {
         this.name = name;
         this.lobby = lobby;
     }

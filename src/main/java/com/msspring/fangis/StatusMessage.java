@@ -1,21 +1,13 @@
 package com.msspring.fangis;
 
 public class StatusMessage {
+    private Position position;
 
-    private Player status;
-
-    public StatusMessage() {
+    public StatusMessage(Position position) {
+        this.position = position;
     }
 
-    public StatusMessage(Player userstatus) {
-        this.status = userstatus;
-    }
-
-    public Player getStatus() {
-        return status;
-    }
-
-    public void setStatus(Player status) {
-        this.status = status;
+    public Position getPosition() {
+        return position;
     }
 }
