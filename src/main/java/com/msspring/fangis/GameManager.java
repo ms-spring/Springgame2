@@ -1,8 +1,11 @@
 package com.msspring.fangis;
 
+import org.springframework.stereotype.Component;
+
 //game class implementing 3 lobbies.
+@Component
 public class GameManager {
-    GameState[] gameStates;
+    private GameState[] gameStates;
 
     public GameManager() {
         gameStates = new GameState[3];
