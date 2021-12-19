@@ -4,7 +4,7 @@ import {Wall} from "./wall.js";
 export class Game {
     static WIDTH = 800;
     static HEIGHT = 600;
-    
+
     constructor() {
         let player1 = new Player(this, "Oma Wae");
         player1.x = 400;
@@ -13,13 +13,13 @@ export class Game {
         player2.x = 500;
         player2.y = 100;
         this.entities = [
-            player1,
-            player2,
             new Wall(this, 200, 300, 50, 200, Math.PI / 8),
             new Wall(this, 260, 300, 50, 200, -Math.PI / 8),
             new Wall(this, 500, 400, 100, 30, 0.1),
             new Wall(this, 200, 50, 100, 30, 0),
-            new Wall(this, 350, 50, 100, 30, 0)
+            new Wall(this, 350, 50, 100, 30, 0),
+            player1,
+            player2,
         ];
         this.player = player1;
 
