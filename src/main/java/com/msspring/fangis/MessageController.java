@@ -12,11 +12,13 @@ import java.util.Map;
 @Controller
 public class MessageController {
 
-    private Map<String, String> userStati;
+    private Map<String, String> userMapping;
+    private Game gameStatus;
 
     @Autowired
-    public MessageController(Map<String, String> userStati) {
-        this.userStati = userStati;
+    public MessageController(Map<String, String> userStati, Game gameStatus) {
+        this.userMapping = userStati;
+        this.gameStatus = gameStatus;
     }
 
 
@@ -24,16 +26,10 @@ public class MessageController {
 
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
-    public Greeting greeting(@Header("simpSessionId") String sessionId, UserNameMessage message) throws Exception {
+    public Greeting addUser(@Header("simpSessionId") String sessionId, UserNameMessage message) throws Exception {
 
 
-        userStati.put(message.getName(), "fett");
-
-        for (Map.Entry entry : userStati.entrySet()) {
-            System.out.println(entry.getKey());
-        }
-
-        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+        return new Greeting();
     }
 
    @MessageMapping("/update")

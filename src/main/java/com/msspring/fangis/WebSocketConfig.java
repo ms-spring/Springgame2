@@ -25,9 +25,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/gs-guide-websocket").withSockJS();
     }
 
-    @Bean(name="userStati")
-    public Map<String,String> userStati() {
+    @Bean(name="userMapping")
+    public Map<String,String> userMapping() {
         return new HashMap<>();
+    }
+
+    @Bean(name="gameState")
+    public Game gameState() {
+        return new Game();
     }
 
 }

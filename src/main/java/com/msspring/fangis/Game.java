@@ -1,14 +1,15 @@
 package com.msspring.fangis;
 
+import java.util.HashMap;
+
+//game class implementing 3 lobbies.
 public class Game {
 
-    private int lobby;
+    GameState[] gameStates;
 
-    public void setLobby(int lobby) {
-        this.lobby = lobby;
+    public Game() {
+        gameStates = new GameState[3];
+        for (int i = 0; i<3 ; i++) gameStates[i] = new GameState();
     }
 
-    public int getLobby() {
-        return lobby;
-    }
 }
