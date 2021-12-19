@@ -44,7 +44,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                       ████████████████
      */
     @Bean(name = "userMapping")
-    public Map<String, String> userMapping() {
+    public Map<String, User> userMapping() {
         return new HashMap<>();
     }
 }

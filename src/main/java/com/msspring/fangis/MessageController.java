@@ -11,18 +11,16 @@ import java.util.Map;
 @Controller
 public class MessageController {
 
-    private Map<String, String> userMapping;
+    private Map<String, User> userMapping;
     private GameManager gameManager;
 
 
     @Autowired
-    public MessageController(Map<String, String> userStati, GameManager gameManager) {
+    public MessageController(Map<String, User> userStati, GameManager gameManager) {
         this.userMapping = userStati;
         this.gameManager = gameManager;
 
     }
-
-
 
 
     @MessageMapping("/hello")
@@ -31,14 +29,14 @@ public class MessageController {
         return;
     }
 
-   @MessageMapping("/update")
-   @SendTo("/game/broadcast")
-   public void updateUser(@Header("simpSessionId") String sessionId, StatusMessage message) throws Exception {
+    @MessageMapping("/update")
+    @SendTo("/game/broadcast")
+    public void updateUser(@Header("simpSessionId") String sessionId, StatusMessage message) throws Exception {
 
 
 
         return;
-   }
+    }
 
 
 
