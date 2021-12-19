@@ -7,7 +7,7 @@ public class UserNameMessage {
     private String name;
     private int lobby;
 
-    public UserNameMessage(@NotEmpty String name, int lobby) {
+    public UserNameMessage(String name, int lobby) {
         this.name = name;
         this.lobby = lobby;
     }
