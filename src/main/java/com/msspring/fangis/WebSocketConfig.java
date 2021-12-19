@@ -30,9 +30,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         return new HashMap<>();
     }
 
-    @Bean(name="gameState")
-    public Game gameState() {
-        return new Game();
+    @Bean(name="gameManager")
+    public GameManager gameManager() {
+        return new GameManager();
+    }
+
+    @Bean(name="testbean")
+    public testBeans testbean() {
+        return new testBeans();
     }
 
 }

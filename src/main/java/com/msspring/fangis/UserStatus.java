@@ -2,23 +2,23 @@ package com.msspring.fangis;
 
 public class UserStatus {
     private Position position;
-    private Game game;
+    private GameManager gameManager;
 
-    public UserStatus(Position position, Game game) {
+    public UserStatus(Position position, GameManager gameManager) {
         this.position = position;
-        this.game = game;
+        this.gameManager = gameManager;
     }
 
     public void setPosition(Position position) {
         this.position = position;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setGame(GameManager gameManager) {
+        this.gameManager = gameManager;
     }
 
-    public Game getGame() {
-        return game;
+    public GameManager getGame() {
+        return gameManager;
     }
 
     public Position getPosition() {
