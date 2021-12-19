@@ -26,10 +26,9 @@ public class MessageController {
 
 
     @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public Greeting addUser(@Header("simpSessionId") String sessionId, UserNameMessage message) throws Exception {
+    public void login(@Header("simpSessionId") String sessionId, UserNameMessage message) throws Exception {
         System.out.println(this.gameManager.getGameStates()[0]);
-        return new Greeting();
+        return;
     }
 
    @MessageMapping("/update")
