@@ -16,7 +16,10 @@ export class Game {
             player1,
             player2,
             new Wall(this, 200, 300, 50, 200, Math.PI / 8),
-            new Wall(this, 500, 400, 100, 30, 0.1)
+            new Wall(this, 260, 300, 50, 200, -Math.PI / 8),
+            new Wall(this, 500, 400, 100, 30, 0.1),
+            new Wall(this, 200, 50, 100, 30, 0),
+            new Wall(this, 350, 50, 100, 30, 0)
         ];
         this.player = player1;
 

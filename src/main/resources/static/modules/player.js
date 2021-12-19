@@ -36,7 +36,7 @@ export class Player extends Entity {
     update(t) {
         super.update(t);
 
-        const SPEED = 200, RADIUS = 10;
+        const SPEED = 175, RADIUS = 15;
 
         // Determine the movement based on flags
         let dx = 0, dy = 0;
@@ -48,11 +48,23 @@ export class Player extends Entity {
         // Ensure diagonal is as fast as going straight
 
         if (this.move !== Player.MOVE_NONE) {
+            // Keep the animation move forward
             this.animTime += t;
+            // Update the direction smoothly
             this.animDir = lerp_angle(this.animDir, Math.atan2(dy, dx), 0.2);
         } else {
-            this.animTime = 0;
+            // Walk stop animation by moving to the closest "standing" frame (0 or 5)
+            let animFrame = Math.round(this.animTime / 0.1) % 10;
+            if ([1, 2, 6, 7].includes(animFrame)) {
+                this.animTime -= t;
+            } else if ([3, 4, 8, 9].includes(animFrame)) {
+                this.animTime += t;
+            }
+            if (this.animTime < 0) {
+                this.animTime = 1 + (this.animTime % 1);
+            }
         }
+        this.animTime %= 1;
 
         let len = (dx ** 2 + dy ** 2) ** 0.5;
         if (len > 0) {
@@ -98,22 +110,12 @@ export class Player extends Entity {
 
     draw(ctx) {
         super.draw(ctx);
-
-        ctx.fillStyle = "black";
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.animDir);
         ctx.translate(-this.x, -this.y);
-        ctx.drawImage(this.img, (Math.floor(this.animTime / 0.1) % 10) * 128, 0, 128, 128, this.x - 32, this.y - 32, 64, 64);
+        // Pick the animation frame based on the time 0.0 to 0.99 split over 10 frames
+        ctx.drawImage(this.img, (Math.round(this.animTime / 0.1) % 10) * 128, 0, 128, 128, this.x - 32, this.y - 32, 64, 64);
         ctx.restore();
-
-        /*
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fill();
-        */
-
     }
 }
