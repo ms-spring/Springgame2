@@ -1,5 +1,6 @@
 package com.msspring.fangis;
 
+import com.msspring.fangis.exceptions.UserNameAlreadyUsedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -25,7 +26,20 @@ public class MessageController {
 
     @MessageMapping("/hello")
     public void login(@Header("simpSessionId") String sessionId, UserNameMessage message) throws Exception {
-        System.out.println(this.gameManager.getGameStates()[0]);
+        String username = message.getName();
+        //check if username already taken!
+        if (userMapping.values().stream().anyMatch(p -> p.getName().equals(username))) {
+            throw new UserNameAlreadyUsedException();
+        }
+        int lobby = message.getLobby();
+        if (!(0 <= lobby && lobby <= 2)) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        User user = new User(username, message.getLobby());
+        userMapping.put(sessionId,user);
+
+
         return;
     }
 
