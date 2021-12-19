@@ -2,20 +2,20 @@ package com.msspring.fangis;
 
 public class StatusMessage {
 
-    private UserStatus status;
+    private Player status;
 
     public StatusMessage() {
     }
 
-    public StatusMessage(UserStatus userstatus) {
+    public StatusMessage(Player userstatus) {
         this.status = userstatus;
     }
 
-    public UserStatus getStatus() {
+    public Player getStatus() {
         return status;
     }
 
-    public void setStatus(UserStatus status) {
+    public void setStatus(Player status) {
         this.status = status;
     }
 }

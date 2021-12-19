@@ -3,13 +3,13 @@ package com.msspring.fangis;
 import java.util.HashMap;
 
 public class GameState {
-    private HashMap<String, UserStatus> userStates;
+    private HashMap<User, Player> playerMapping;
 
     public GameState() {
-        userStates = new HashMap<>();
+        playerMapping = new HashMap<>();
     }
 
-    public HashMap<String, UserStatus> getUserStates() {
-        return userStates;
+    public HashMap<User, Player> getPlayerMapping() {
+        return playerMapping;
     }
 }

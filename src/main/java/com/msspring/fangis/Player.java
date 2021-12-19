@@ -1,9 +1,9 @@
 package com.msspring.fangis;
 
-public class UserStatus {
+public class Player {
     private Position position;
 
-    public UserStatus(Position position) {
+    public Player(Position position) {
         this.position = position;
     }
 
