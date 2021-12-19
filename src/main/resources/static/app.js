@@ -74,14 +74,11 @@ $(function () {
     });
     $("#btn-game-1").click(() => {
         setStage('game');
-        alert("Sunny Al Savarim Game 1");
     })
     $("#btn-game-2").click(() => {
         setStage('game');
-        alert("Sunny Al Savarim Game 2");
     })
     $("#btn-game-3").click(() => {
         setStage('game');
-        alert("Sunny Al Savarim Game 3");
     })
 });

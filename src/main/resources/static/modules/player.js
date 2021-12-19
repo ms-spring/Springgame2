@@ -2,6 +2,16 @@ import {Entity} from "./entity.js";
 import {Wall} from "./wall.js";
 import {Game} from "./game.js";
 
+function short_angle_dist(from, to) {
+    let max_angle = Math.PI * 2;
+    let difference = (to - from) % max_angle;
+    return 2 * difference % max_angle - difference;
+}
+
+function lerp_angle(from, to, weight) {
+    return from + short_angle_dist(from, to) * weight;
+}
+
 export class Player extends Entity {
     static MOVE_NONE = 0;
     static MOVE_LEFT = 1;
@@ -15,6 +25,12 @@ export class Player extends Entity {
         this.x = 0;
         this.y = 0;
         this.move = Player.MOVE_NONE;
+
+        this.animTime = 0;
+        this.animDir = 0;
+
+        this.img = new Image();
+        this.img.src = "player.png";
     }
 
     update(t) {
@@ -30,6 +46,14 @@ export class Player extends Entity {
         if (this.move & Player.MOVE_DOWN) dy = 1;
 
         // Ensure diagonal is as fast as going straight
+
+        if (this.move !== Player.MOVE_NONE) {
+            this.animTime += t;
+            this.animDir = lerp_angle(this.animDir, Math.atan2(dy, dx), 0.2);
+        } else {
+            this.animTime = 0;
+        }
+
         let len = (dx ** 2 + dy ** 2) ** 0.5;
         if (len > 0) {
             this.x += dx * SPEED / len * t;
@@ -74,10 +98,22 @@ export class Player extends Entity {
 
     draw(ctx) {
         super.draw(ctx);
+
+        ctx.fillStyle = "black";
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.animDir);
+        ctx.translate(-this.x, -this.y);
+        ctx.drawImage(this.img, (Math.floor(this.animTime / 0.1) % 10) * 128, 0, 128, 128, this.x - 32, this.y - 32, 64, 64);
+        ctx.restore();
+
+        /*
         ctx.fillStyle = "black";
         ctx.beginPath();
         ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
         ctx.closePath();
         ctx.fill();
+        */
+
     }
 }

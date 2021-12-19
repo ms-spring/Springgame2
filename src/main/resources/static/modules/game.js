@@ -7,7 +7,7 @@ export class Game {
     
     constructor() {
         let player1 = new Player(this, "Oma Wae");
-        player1.x = 200;
+        player1.x = 400;
         player1.y = 300;
         let player2 = new Player(this, "Opa Mo");
         player2.x = 500;
@@ -15,8 +15,8 @@ export class Game {
         this.entities = [
             player1,
             player2,
-            new Wall(this, 200, 200, 100, 100, Math.PI / 4),
-            new Wall(this, 500, 400, 100, 10, 0)
+            new Wall(this, 200, 300, 50, 200, Math.PI / 8),
+            new Wall(this, 500, 400, 100, 30, 0.1)
         ];
         this.player = player1;
 
