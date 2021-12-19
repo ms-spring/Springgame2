@@ -12,14 +12,14 @@ import java.util.Map;
 public class MessageController {
 
     private Map<String, String> userMapping;
-    private GameManager gameManagerState;
-    private testBeans testbean;
+    private GameManager gameManager;
+
 
     @Autowired
-    public MessageController(Map<String, String> userStati, GameManager gameManagerState, testBeans testbean) {
+    public MessageController(Map<String, String> userStati, GameManager gameManager) {
         this.userMapping = userStati;
-        this.gameManagerState = gameManagerState;
-        this.testbean = testbean;
+        this.gameManager = gameManager;
+
     }
 
 
@@ -28,11 +28,7 @@ public class MessageController {
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public Greeting addUser(@Header("simpSessionId") String sessionId, UserNameMessage message) throws Exception {
-        gameManagerState.gameStates[0].getUserStates().put("dini mueter", null);
-        boolean test = testbean.getGameState().gameStates[0].getUserStates().isEmpty();
-        if (test) {
-            return new Greeting("ababababab");
-        }
+        
 
         return new Greeting();
     }

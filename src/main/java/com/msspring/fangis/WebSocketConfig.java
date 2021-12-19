@@ -35,9 +35,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         return new GameManager();
     }
 
-    @Bean(name="testbean")
-    public testBeans testbean() {
-        return new testBeans();
-    }
 
 }
