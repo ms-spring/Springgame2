@@ -32,8 +32,8 @@ public class MessageController {
 
 
     @Autowired
-    public MessageController(Map<String, User> userStati, GameManager gameManager) {
-        this.userMapping = userStati;
+    public MessageController(Map<String, User> userMapping, GameManager gameManager) {
+        this.userMapping = userMapping;
         this.gameManager = gameManager;
 
     }
