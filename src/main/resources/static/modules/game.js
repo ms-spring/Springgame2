@@ -59,7 +59,8 @@ export class Game {
     }
 
     draw() {
-        this.ctx.clearRect(0, 0, 800, 600);
+        this.ctx.fillStyle = "#f0f3f6";
+        this.ctx.fillRect(0, 0, 800, 600);
         for (let e of this.entities) {
             e.draw(this.ctx);
         }

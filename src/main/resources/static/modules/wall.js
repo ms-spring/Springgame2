@@ -16,12 +16,14 @@ export class Wall extends Entity {
 
     draw(ctx) {
         super.draw(ctx);
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "#919dae";
+        ctx.strokeStyle = "black";
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.r);
         ctx.translate(-this.x, -this.y);
         ctx.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+        ctx.strokeRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
         ctx.restore();
     }
 }
