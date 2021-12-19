@@ -83,10 +83,10 @@ export class Player extends Entity {
             ly = r * Math.sin(theta);
 
             // Check for overlap of hit boxes
-            if (lx > -o.w / 2 && lx < o.w / 2 && ly > -o.h / 2 && ly < o.h / 2) {
+            if (lx > -o.w / 2 - RADIUS && lx < o.w / 2 + RADIUS && ly > -o.h / 2 - RADIUS && ly < o.h / 2 + RADIUS) {
                 // Compute overlap from left, right, top and bottom
                 // Move so that the least overlap is resolved
-                let overlap = [lx + o.w / 2, o.w / 2 - lx, ly + o.h / 2, o.h / 2 - ly];
+                let overlap = [lx + o.w / 2 + RADIUS, o.w / 2 - lx + RADIUS, ly + o.h / 2 + RADIUS, o.h / 2 - ly + RADIUS];
                 let min = Math.min(...overlap);
                 if (min === overlap[0]) lx -= overlap[0];
                 if (min === overlap[1]) lx += overlap[1];
