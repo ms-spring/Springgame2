@@ -1,4 +1,4 @@
-import { Game } from './game.js'
+import { Game } from './modules/game.js'
 
 function setStage(id) {
     $('#stage-connect').toggle(id === 'connect');
