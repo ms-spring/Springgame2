@@ -59,8 +59,8 @@ public class MessageController {
         userMapping.put(sessionId, user);
 
 
-        return;
     }
+
 
     @MessageMapping("/update")
     @SendTo("/game/broadcast")
