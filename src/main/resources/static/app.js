@@ -41,7 +41,7 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#username").val()}));
 }
 
 function showGreeting(message) {
@@ -57,19 +57,12 @@ $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
-    $("#connect").click(function () {
-        connect();
-    });
-    $("#disconnect").click(function () {
-        disconnect();
-    });
-    $("#send").click(function () {
-        sendName();
-    });
     $("#btn-connect").click(() => {
+        connect();
         setStage('login');
     });
     $("#btn-login").click(() => {
+        sendName();
         setStage('lobby');
     });
     $("#btn-game-1").click(() => {
