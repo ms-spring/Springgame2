@@ -102,13 +102,6 @@ public class MessageController {
         GameState state = gameManager.getGameStates()[user.getLobby()];
         Player player = state.getPlayerMapping().get(user);
         player.setPosition(message.getPosition());
-
-        /*
-        // Prepare response message
-        return new GameStateMessage(
-                state.getPlayerMapping().entrySet().stream().map(
-                        e -> new PlayerState(e.getKey(), e.getValue())).toArray(PlayerState[]::new));
-
-         */
+        player.setMove(message.getMove());
     }
 }

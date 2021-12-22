@@ -21,21 +21,15 @@ public class AlhamdulileService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    @Scheduled(fixedRate = 20)
+    @Scheduled(fixedRate = 100)
     public void update() {
-        System.out.println(userMapping);
-        System.out.println(gameManager.getGameStates()[0].getPlayerMapping());
-        Map<String,PlayerState> players = new HashMap<>();
+        Map<String, PlayerState> players = new HashMap<>();
         for (GameState state : gameManager.getGameStates()) {
             for (Map.Entry<User, Player> e : state.getPlayerMapping().entrySet()) {
-                players.put(e.getKey().getName() ,new PlayerState(e.getKey(), e.getValue()));
+                players.put(e.getKey().getName(), new PlayerState(e.getKey(), e.getValue()));
             }
         }
-        System.out.println(players.toString());
-        System.out.println("blablalba");
-
         GameStateMessage msg = new GameStateMessage(players.values().toArray(new PlayerState[0]));
-
         messagingTemplate.convertAndSend("/game/broadcast", msg);
     }
 }

@@ -44,7 +44,7 @@ export class Game {
         window.requestAnimationFrame((t) => this.update(t));
 
         // Add network update loop
-        window.setInterval(() => this.toNetwork(), 20);
+        window.setInterval(() => this.toNetwork(), 100);
     }
 
     getLocalPlayer() {
@@ -85,7 +85,7 @@ export class Game {
         if (local === undefined) {
             return;
         }
-        this.socket.send("/app/update", {}, JSON.stringify({position: {x: local.x, y: local.y}}));
+        this.socket.send("/app/update", {}, JSON.stringify({position: {x: local.x, y: local.y}, move: local.move}));
     }
 
     fromNetwork(data) {
@@ -111,15 +111,13 @@ export class Game {
         }
 
         // Remove all players that were not updated
-        let newEntities = [];
-        for (let p of this.getEntitiesOfClass(Wall)) {
-            newEntities.push(p);
-        }
+        let toRemove = [];
         for (let p of this.getEntitiesOfClass(Player)) {
-            if (updatedNames.includes(p.name)) {
-                newEntities.push(p);
+            p.isLocal = p.name === this.localName;
+            if (!updatedNames.includes(p.name)) {
+                toRemove.push(p);
             }
         }
-        this.entities = newEntities;
+        this.entities = this.entities.filter(p => !toRemove.includes(p));
     }
 }

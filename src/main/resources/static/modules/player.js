@@ -22,8 +22,16 @@ export class Player extends Entity {
     constructor(game, name) {
         super(game);
         this.name = name;
+
+        // The coordinates at which the player is rendered
         this.x = 0;
         this.y = 0;
+
+        // The coordinates at which the player is according to the server
+        this.serverX = 0;
+        this.serverY = 0;
+
+        this.isLocal = false;
         this.move = Player.MOVE_NONE;
 
         this.animTime = 0;
@@ -66,10 +74,18 @@ export class Player extends Entity {
         }
         this.animTime %= 1;
 
-        let len = (dx ** 2 + dy ** 2) ** 0.5;
-        if (len > 0) {
-            this.x += dx * SPEED / len * t;
-            this.y += dy * SPEED / len * t;
+        if (this.isLocal) {
+            // Update x, y directly if we are controlling the local player
+            let len = (dx ** 2 + dy ** 2) ** 0.5;
+            if (len > 0) {
+                this.x += dx * SPEED / len * t;
+                this.y += dy * SPEED / len * t;
+            }
+        } else {
+            // Otherwise interpolate the networked x, y to the rendered x, y
+            const INTERPOLATION_RATE = 0.25;
+            this.x = this.serverX * INTERPOLATION_RATE + this.x * (1 - INTERPOLATION_RATE);
+            this.y = this.serverY * INTERPOLATION_RATE + this.y * (1 - INTERPOLATION_RATE);
         }
 
         // Check collision
@@ -129,8 +145,8 @@ export class Player extends Entity {
     }
 
     fromNetwork(pd) {
-        // TODO: Add interpolation
-        this.x = pd.position.x;
-        this.y = pd.position.y;
+        this.serverX = pd.player.position.x;
+        this.serverY = pd.player.position.y;
+        this.move = pd.player.move;
     }
 }
