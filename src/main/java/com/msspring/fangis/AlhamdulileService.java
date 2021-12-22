@@ -5,6 +5,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 // 5/5 Sterne - Super Service!
@@ -21,10 +24,17 @@ public class AlhamdulileService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    @Scheduled(fixedRate=500)
+    @Scheduled(fixedRate = 500)
     public void update() {
-        System.out.println(this.userMapping);
-        messagingTemplate.convertAndSend("/topic/greetings", new Greeting("alhamdulile" + Math.random()));
+        System.out.println(userMapping);
+        List<PlayerState> players = new ArrayList<>();
+        for (GameState state : gameManager.getGameStates()) {
+            for (Map.Entry<User, Player> e : state.getPlayerMapping().entrySet()) {
+                players.add(new PlayerState(e.getKey(), e.getValue()));
+            }
+        }
+        System.out.println(Arrays.toString(players.toArray(PlayerState[]::new)));
+        messagingTemplate.convertAndSend("/topic/greetings", new GameStateMessage(players.get(0))); //.toArray(PlayerState[]::new)));
     }
 }
 

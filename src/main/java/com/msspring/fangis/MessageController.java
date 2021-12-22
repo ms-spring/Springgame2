@@ -5,6 +5,7 @@ import com.msspring.fangis.exceptions.InvalidStatusMessageException;
 import com.msspring.fangis.exceptions.InvalidUserNameMessageException;
 import com.msspring.fangis.exceptions.UserNameAlreadyUsedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
+import org.springframework.web.socket.messaging.SessionConnectEvent;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import javax.validation.Configuration;
 import javax.validation.Validation;
@@ -23,7 +26,7 @@ import javax.validation.ValidatorFactory;
 import java.util.Map;
 
 @Controller
-public class MessageController implements WebSocketHandler {
+public class MessageController {
     private static final Validator validator;
 
     static {
@@ -39,22 +42,25 @@ public class MessageController implements WebSocketHandler {
 
     @Autowired
     public MessageController(Map<String, User> userMapping, GameManager gameManager, SimpMessagingTemplate messagingTemplate) {
-        super();
         this.userMapping = userMapping;
         this.gameManager = gameManager;
         this.messagingTemplate = messagingTemplate;
     }
 
-    @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        super.afterConnectionEstablished(session);
-        System.out.println("CONNECTTTTIONNN FOUND YEAH BOY");
+    @EventListener
+    public void onConnectEvent(SessionConnectEvent e) {
+        //System.out.println(e);
     }
 
-    @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        super.afterConnectionClosed(session, status);
-        System.out.println("CONNECTTTTIONNN CLOSEEE OOOOH NOOO BOY");
+    @EventListener
+    public void onDisconnectEvent(SessionDisconnectEvent e) throws InvalidSessionException {
+        String sessionId = e.getSessionId();
+        if(!userMapping.containsKey(sessionId)) {
+            throw new InvalidSessionException();
+        }
+        User user = userMapping.get(sessionId);
+        userMapping.remove(sessionId);
+        gameManager.getGameStates()[user.getLobby()].getPlayerMapping().remove(user);
     }
 
     @MessageMapping("/hello")
@@ -82,8 +88,7 @@ public class MessageController implements WebSocketHandler {
 
 
     @MessageMapping("/update")
-    @SendTo("/game/broadcast")
-    public GameStateMessage updateUser(@Header("simpSessionId") String sessionId, StatusMessage message) throws InvalidSessionException, InvalidStatusMessageException {
+    public void updateUser(@Header("simpSessionId") String sessionId, StatusMessage message) throws InvalidSessionException, InvalidStatusMessageException {
         // Check for valid update
         if (!userMapping.containsKey(sessionId)) {
             throw new InvalidSessionException();
@@ -98,9 +103,12 @@ public class MessageController implements WebSocketHandler {
         Player player = state.getPlayerMapping().get(user);
         player.setPosition(message.getPosition());
 
+        /*
         // Prepare response message
         return new GameStateMessage(
                 state.getPlayerMapping().entrySet().stream().map(
                         e -> new PlayerState(e.getKey(), e.getValue())).toArray(PlayerState[]::new));
+
+         */
     }
 }
