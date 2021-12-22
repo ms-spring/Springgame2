@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.validation.constraints.Size;
 
 public class Position {
-    @Size(min = 0, max = 800)
     private double x;
-    @Size(min = 0, max = 600)
     private double y;
 
     public Position(double x, double y) {

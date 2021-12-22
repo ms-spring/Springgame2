@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-// 5/5 Sterne - Super Service!
+// 4/5 Sterne - Super Service!
 @Component
 public class AlhamdulileService {
     private Map<String, User> userMapping;
@@ -21,7 +21,7 @@ public class AlhamdulileService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    @Scheduled(fixedRate = 2000)
+    @Scheduled(fixedRate = 20)
     public void update() {
         System.out.println(userMapping);
         System.out.println(gameManager.getGameStates()[0].getPlayerMapping());
@@ -34,9 +34,9 @@ public class AlhamdulileService {
         System.out.println(players.toString());
         System.out.println("blablalba");
 
-        GameStateMessage msg = new GameStateMessage(players);
+        GameStateMessage msg = new GameStateMessage(players.values().toArray(new PlayerState[0]));
 
-        messagingTemplate.convertAndSend("/game/broadcast", players);
+        messagingTemplate.convertAndSend("/game/broadcast", msg);
     }
 }
 

@@ -44,7 +44,7 @@ export class Game {
         window.requestAnimationFrame((t) => this.update(t));
 
         // Add network update loop
-        window.setInterval(() => this.toNetwork(), 100);
+        window.setInterval(() => this.toNetwork(), 20);
     }
 
     getLocalPlayer() {
@@ -96,11 +96,6 @@ export class Game {
         for (let pd of data.players) {
             updatedNames.push(pd.name);
 
-            if (pd.name === this.localName) {
-                // Ignore updates to local player
-                continue;
-            }
-
             // Find the player with the name
             let player = this.getEntitiesOfClass(Player).find(p => p.name === pd.name);
             if (player === undefined) {
@@ -108,12 +103,18 @@ export class Game {
                 player = new Player(this, pd.name);
                 this.entities.push(player);
             }
-            // Update the player from network in both cases
-            player.fromNetwork(pd);
+            // Ignore updates to local player
+            if (pd.name !== this.localName) {
+                // Update the player from network in both cases
+                player.fromNetwork(pd);
+            }
         }
 
         // Remove all players that were not updated
         let newEntities = [];
+        for (let p of this.getEntitiesOfClass(Wall)) {
+            newEntities.push(p);
+        }
         for (let p of this.getEntitiesOfClass(Player)) {
             if (updatedNames.includes(p.name)) {
                 newEntities.push(p);

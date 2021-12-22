@@ -11,6 +11,18 @@ public class PlayerState {
         this.lobby = user.getLobby();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public int getLobby() {
+        return lobby;
+    }
+
     @Override
     public String toString() {
         return "PlayerState{" +
