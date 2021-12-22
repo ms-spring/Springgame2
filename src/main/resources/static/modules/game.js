@@ -20,6 +20,7 @@ export class Game {
             new Wall(this, 350, 50, 100, 30, 0),
             player1,
             player2,
+
         ];
         this.player = player1;
 
@@ -65,4 +66,11 @@ export class Game {
             e.draw(this.ctx);
         }
     }
+
+    updatePlayerPosition(playerData) {
+
+
+    }
+
+
 }
