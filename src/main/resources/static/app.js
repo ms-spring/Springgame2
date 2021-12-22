@@ -29,6 +29,13 @@ function connect() {
         stompClient.subscribe('/topic/greetings', function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         });
+        stompClient.subscribe('/game/broadcast', function (playerData) {
+            //TODO stephan has to deserialize to playerData and call playerUpdate
+
+
+            //add code to update player positions
+            console.log('was hesch denn du scho erlebt du huere banane')
+        });
     });
 }
 
@@ -53,7 +60,7 @@ $(window).on('load', () => {
 })
 
 $(function () {
-    new Game();
+    let game = new Game();
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
