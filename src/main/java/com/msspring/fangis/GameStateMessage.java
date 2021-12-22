@@ -1,9 +1,12 @@
 package com.msspring.fangis;
 
-public class GameStateMessage {
-    private PlayerState[] players;
+import java.util.List;
+import java.util.Map;
 
-    public GameStateMessage(PlayerState[] players) {
+public class GameStateMessage {
+    private Map<String,PlayerState> players;
+
+    public GameStateMessage(Map<String,PlayerState> players) {
         this.players = players;
     }
 }
