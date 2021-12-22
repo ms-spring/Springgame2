@@ -33,8 +33,7 @@ public class AlhamdulileService {
                 players.add(new PlayerState(e.getKey(), e.getValue()));
             }
         }
-        System.out.println(Arrays.toString(players.toArray(PlayerState[]::new)));
-        messagingTemplate.convertAndSend("/topic/greetings", new GameStateMessage(players.get(0))); //.toArray(PlayerState[]::new)));
+        messagingTemplate.convertAndSend("/topic/greetings", new GameStateMessage(players.toArray(PlayerState[]::new)));
     }
 }
 

@@ -30,4 +30,12 @@ public class Position {
     public double getY() {
         return y;
     }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
