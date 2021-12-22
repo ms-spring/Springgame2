@@ -5,10 +5,16 @@ import com.msspring.fangis.exceptions.InvalidStatusMessageException;
 import com.msspring.fangis.exceptions.InvalidUserNameMessageException;
 import com.msspring.fangis.exceptions.UserNameAlreadyUsedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
 import javax.validation.Configuration;
 import javax.validation.Validation;
@@ -17,7 +23,7 @@ import javax.validation.ValidatorFactory;
 import java.util.Map;
 
 @Controller
-public class MessageController {
+public class MessageController implements WebSocketHandler {
     private static final Validator validator;
 
     static {
@@ -29,15 +35,27 @@ public class MessageController {
 
     private Map<String, User> userMapping;
     private GameManager gameManager;
-
+    private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    public MessageController(Map<String, User> userMapping, GameManager gameManager) {
+    public MessageController(Map<String, User> userMapping, GameManager gameManager, SimpMessagingTemplate messagingTemplate) {
+        super();
         this.userMapping = userMapping;
         this.gameManager = gameManager;
-
+        this.messagingTemplate = messagingTemplate;
     }
 
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        super.afterConnectionEstablished(session);
+        System.out.println("CONNECTTTTIONNN FOUND YEAH BOY");
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        super.afterConnectionClosed(session, status);
+        System.out.println("CONNECTTTTIONNN CLOSEEE OOOOH NOOO BOY");
+    }
 
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
