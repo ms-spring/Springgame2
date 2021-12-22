@@ -110,6 +110,8 @@ export class Player extends Entity {
 
     draw(ctx) {
         super.draw(ctx);
+
+        // Draw the rotated and animated player character
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.animDir);
@@ -117,5 +119,18 @@ export class Player extends Entity {
         // Pick the animation frame based on the time 0.0 to 0.99 split over 10 frames
         ctx.drawImage(this.img, (Math.round(this.animTime / 0.1) % 10) * 128, 0, 128, 128, this.x - 32, this.y - 32, 64, 64);
         ctx.restore();
+
+        // Draw the player name
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        ctx.font = "10pt sans-serif";
+        ctx.fillStyle = "black";
+        ctx.fillText(this.name, this.x, this.y - 24);
+    }
+
+    fromNetwork(pd) {
+        // TODO: Add interpolation
+        this.x = pd.position.x;
+        this.y = pd.position.y;
     }
 }

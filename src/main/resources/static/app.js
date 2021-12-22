@@ -1,4 +1,4 @@
-import { Game } from './modules/game.js'
+import {Game} from './modules/game.js'
 
 function setStage(id) {
     $('#stage-connect').toggle(id === 'connect');
@@ -8,6 +8,7 @@ function setStage(id) {
 }
 
 var stompClient = null;
+var game;
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -29,12 +30,8 @@ function connect() {
         stompClient.subscribe('/topic/greetings', function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         });
-        stompClient.subscribe('/game/broadcast', function (playerData) {
-            //TODO stephan has to deserialize to playerData and call playerUpdate
-
-
-            //add code to update player positions
-            console.log('was hesch denn du scho erlebt du huere banane')
+        stompClient.subscribe('/game/broadcast', function (data) {
+            game.fromNetwork(JSON.parse(data.body));
         });
     });
 }
@@ -49,6 +46,7 @@ function disconnect() {
 
 function sendName() {
     stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#username").val()}));
+    game.localName = $("#username").val();
 }
 
 function showGreeting(message) {
@@ -56,11 +54,9 @@ function showGreeting(message) {
 }
 
 $(window).on('load', () => {
-    setStage('connect');
-})
-
-$(function () {
-    let game = new Game();
+    setStage('login');
+    connect();
+    game = new Game(stompClient);
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
