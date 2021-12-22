@@ -40,7 +40,8 @@ public class MessageController {
 
 
     @MessageMapping("/hello")
-    public void login(@Header("simpSessionId") String sessionId, UserNameMessage message) throws Exception {
+    @SendTo("/topic/greetings")
+    public Player login(@Header("simpSessionId") String sessionId, UserNameMessage message) throws Exception {
         if (!validator.validate(message).isEmpty()) {
             throw new InvalidUserNameMessageException();
         }
@@ -58,22 +59,30 @@ public class MessageController {
         User user = new User(username, message.getLobby());
         userMapping.put(sessionId, user);
 
-
+        return new Player(new Position(5, 5));
     }
 
 
     @MessageMapping("/update")
     @SendTo("/game/broadcast")
-    public void updateUser(@Header("simpSessionId") String sessionId, StatusMessage message) throws InvalidSessionException, InvalidStatusMessageException {
+    public GameStateMessage updateUser(@Header("simpSessionId") String sessionId, StatusMessage message) throws InvalidSessionException, InvalidStatusMessageException {
+        // Check for valid update
         if (!userMapping.containsKey(sessionId)) {
             throw new InvalidSessionException();
         }
         if (!validator.validate(message).isEmpty()) {
             throw new InvalidStatusMessageException();
         }
+
+        // Update the player state
         User user = userMapping.get(sessionId);
-        GameState state = gameManager.getGameStates()[0];
+        GameState state = gameManager.getGameStates()[user.getLobby()];
         Player player = state.getPlayerMapping().get(user);
         player.setPosition(message.getPosition());
+
+        // Prepare response message
+        return new GameStateMessage(
+                state.getPlayerMapping().entrySet().stream().map(
+                        e -> new PlayerState(e.getKey(), e.getValue())).toArray(PlayerState[]::new));
     }
 }

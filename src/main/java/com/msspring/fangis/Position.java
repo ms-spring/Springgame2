@@ -1,5 +1,7 @@
 package com.msspring.fangis;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.validation.constraints.Size;
 
 public class Position {
