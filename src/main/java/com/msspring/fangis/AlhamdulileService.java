@@ -29,9 +29,17 @@ public class AlhamdulileService {
                 players.put(e.getKey().getName(), new PlayerState(e.getKey(), e.getValue()));
             }
         }
-        GameStateMessage msg = new GameStateMessage(players.values().toArray(new PlayerState[0]));
+        Player faenger = this.updateFaenger();
+        GameStateMessage msg = new GameStateMessage(players.values().toArray(new PlayerState[0]), faenger);
         messagingTemplate.convertAndSend("/game/broadcast", msg);
     }
+
+    private Player updateFaenger() {
+        //TODO This Method should compute the actual faenger from the gamestate
+        return gameManager.getGameStates()[0].getFaenger();
+    }
+
+
 }
 
 
