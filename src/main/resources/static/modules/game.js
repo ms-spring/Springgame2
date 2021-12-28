@@ -1,5 +1,5 @@
 import {Player} from "./player.js";
-import {Wall} from "./wall.js";
+import {Level} from "./level.js";
 
 export class Game {
     static WIDTH = 800;
@@ -8,13 +8,8 @@ export class Game {
     constructor(socket) {
         this.socket = socket;
 
-        this.entities = [
-            new Wall(this, 200, 300, 50, 200, Math.PI / 8),
-            new Wall(this, 260, 300, 50, 200, -Math.PI / 8),
-            new Wall(this, 500, 400, 100, 30, 0.1),
-            new Wall(this, 200, 50, 100, 30, 0),
-            new Wall(this, 350, 50, 100, 30, 0)
-        ];
+        this.level = new Level(this);
+        this.players = [];
         this.localName = null;
 
         this.canvas = document.querySelector("#game-canvas");
@@ -41,7 +36,7 @@ export class Game {
         });
 
         // Initialize game loop
-        window.requestAnimationFrame((t) => this.update(t));
+        window.requestAnimationFrame((t) => this.loop(t));
 
         // Add network update loop
         window.setInterval(() => this.toNetwork(), 100);
@@ -53,34 +48,38 @@ export class Game {
             return undefined;
         }
         // Find the player that has our local name
-        return this.getEntitiesOfClass(Player).find(p => p.name === this.localName);
+        return this.players.find(p => p.name === this.localName);
     }
 
-    getEntitiesOfClass(cls) {
-        return this.entities.filter(e => e instanceof cls);
-    }
-
-    update(t) {
+    loop(t) {
         let delta = (t - this.lastUpdate) / 1000;
-        for (let e of this.entities) {
-            e.update(delta);
-        }
+
+        this.update(delta);
         this.draw();
 
         // Setup next game loop update
         this.lastUpdate = t;
-        window.requestAnimationFrame((t) => this.update(t));
+        window.requestAnimationFrame((t) => this.loop(t));
+    }
+
+    update(t) {
+        this.level.update(t);
+        for (let e of this.players) {
+            e.update(t);
+        }
     }
 
     draw() {
         this.ctx.fillStyle = "#f0f3f6";
         this.ctx.fillRect(0, 0, 800, 600);
-        for (let e of this.entities) {
+        this.level.draw(this.ctx);
+        for (let e of this.players) {
             e.draw(this.ctx);
         }
     }
 
     toNetwork() {
+        // Since updates only contain the local player state, networking is not done in `Player`
         let local = this.getLocalPlayer();
         if (local === undefined) {
             return;
@@ -89,6 +88,9 @@ export class Game {
     }
 
     fromNetwork(data) {
+        // Update the level state
+        this.level.fromNetwork(data);
+
         // Keep track of all players that were contained in the update (to detect removed players)
         let updatedNames = [];
 
@@ -97,12 +99,13 @@ export class Game {
             updatedNames.push(pd.name);
 
             // Find the player with the name
-            let player = this.getEntitiesOfClass(Player).find(p => p.name === pd.name);
+            let player = this.players.find(p => p.name === pd.name);
             if (player === undefined) {
                 // Player with that name does not exist yet, create it
                 player = new Player(this, pd.name);
-                this.entities.push(player);
+                this.players.push(player);
             }
+
             // Ignore updates to local player
             if (pd.name !== this.localName) {
                 // Update the player from network in both cases
@@ -110,14 +113,10 @@ export class Game {
             }
         }
 
+        // Store in each player whether they are locally controlled or not
+        this.players.forEach(p => p.isLocal = p.name === this.localName);
+
         // Remove all players that were not updated
-        let toRemove = [];
-        for (let p of this.getEntitiesOfClass(Player)) {
-            p.isLocal = p.name === this.localName;
-            if (!updatedNames.includes(p.name)) {
-                toRemove.push(p);
-            }
-        }
-        this.entities = this.entities.filter(p => !toRemove.includes(p));
+        this.players = this.players.filter(p => updatedNames.includes(p.name));
     }
 }

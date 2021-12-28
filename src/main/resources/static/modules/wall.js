@@ -1,6 +1,6 @@
-import {Entity} from "./entity.js";
+import {Component} from "./component.js";
 
-export class Wall extends Entity {
+export class Wall extends Component {
     constructor(game, x, y, w, h, r) {
         super(game);
         this.x = x;
@@ -16,6 +16,7 @@ export class Wall extends Entity {
 
     draw(ctx) {
         super.draw(ctx);
+
         ctx.fillStyle = "#919dae";
         ctx.strokeStyle = "black";
         ctx.save();

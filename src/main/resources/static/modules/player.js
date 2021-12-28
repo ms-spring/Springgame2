@@ -1,18 +1,17 @@
-import {Entity} from "./entity.js";
-import {Wall} from "./wall.js";
 import {Game} from "./game.js";
+import {Component} from "./component.js";
 
-function short_angle_dist(from, to) {
+function shortAngleDist(from, to) {
     let max_angle = Math.PI * 2;
     let difference = (to - from) % max_angle;
     return 2 * difference % max_angle - difference;
 }
 
-function lerp_angle(from, to, weight) {
-    return from + short_angle_dist(from, to) * weight;
+function lerpAngle(from, to, weight) {
+    return from + shortAngleDist(from, to) * weight;
 }
 
-export class Player extends Entity {
+export class Player extends Component {
     static MOVE_NONE = 0;
     static MOVE_LEFT = 1;
     static MOVE_RIGHT = 2;
@@ -21,6 +20,7 @@ export class Player extends Entity {
 
     constructor(game, name) {
         super(game);
+
         this.name = name;
 
         // The coordinates at which the player is rendered
@@ -59,7 +59,7 @@ export class Player extends Entity {
             // Keep the animation move forward
             this.animTime += t;
             // Update the direction smoothly
-            this.animDir = lerp_angle(this.animDir, Math.atan2(dy, dx), 0.2);
+            this.animDir = lerpAngle(this.animDir, Math.atan2(dy, dx), 0.2);
         } else {
             // Walk stop animation by moving to the closest "standing" frame (0 or 5)
             let animFrame = Math.round(this.animTime / 0.1) % 10;
@@ -89,7 +89,7 @@ export class Player extends Entity {
         }
 
         // Check collision
-        for (let o of this.game.getEntitiesOfClass(Wall)) {
+        for (let o of this.game.level.walls) {
             // Convert player coordinates relative to obstacle so that the obstacle is no longer rotated
             let lx = this.x - o.x;
             let ly = this.y - o.y;
@@ -144,9 +144,11 @@ export class Player extends Entity {
         ctx.fillText(this.name, this.x, this.y - 24);
     }
 
-    fromNetwork(pd) {
-        this.serverX = pd.player.position.x;
-        this.serverY = pd.player.position.y;
-        this.move = pd.player.move;
+    fromNetwork(data) {
+        super.fromNetwork(data);
+
+        this.serverX = data.player.position.x;
+        this.serverY = data.player.position.y;
+        this.move = data.player.move;
     }
 }

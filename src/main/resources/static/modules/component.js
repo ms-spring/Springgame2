@@ -1,4 +1,4 @@
-export class Entity {
+export class Component {
     constructor(game) {
         this.game = game;
     }
@@ -8,6 +8,10 @@ export class Entity {
     }
 
     draw(ctx) {
+
+    }
+
+    fromNetwork(data) {
 
     }
 }
