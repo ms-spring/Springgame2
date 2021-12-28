@@ -1,11 +1,14 @@
 import {Player} from "./player.js";
 import {Level} from "./level.js";
+import {Component} from "./component.js";
 
-export class Game {
+export class Game extends Component {
     static WIDTH = 800;
     static HEIGHT = 600;
 
     constructor(socket) {
+        super(null);
+
         this.socket = socket;
 
         this.level = new Level(this);
