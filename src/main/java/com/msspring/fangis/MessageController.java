@@ -18,8 +18,10 @@ import javax.validation.Configuration;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 @Controller
 public class MessageController {
@@ -81,7 +83,15 @@ public class MessageController {
         //800 uf x 600 uf y
 
         Random r = new Random();
-        gameManager.getGameStates()[0].getPlayerMapping().put(user, new Player(new Position(r.nextInt(800),r.nextInt(600))));
+
+        /*Set<Integer> availableColors = new HashSet<Integer>();
+        availableColors.addAll(new int[] {0, 1,2,3,4,5,6});
+        for(Player player : gameManager.getGameStates()[0].getPlayerMapping().values()) {
+            player.
+        }*/
+
+
+        gameManager.getGameStates()[0].getPlayerMapping().put(user, new Player(new Position(r.nextInt(800),r.nextInt(600)), 0, 0));
 
         return;
     }

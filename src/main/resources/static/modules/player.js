@@ -11,6 +11,37 @@ function lerpAngle(from, to, weight) {
     return from + shortAngleDist(from, to) * weight;
 }
 
+// input: h in [0,360] and s,v in [0,1] - output: r,g,b in [0,255]
+function hsv2rgb(h, s, v) {
+    let f = (n, k = (n + h / 60) % 6) => v - v * s * Math.max(Math.min(k, 4 - k, 1), 0);
+    return [f(5), f(3), f(1)];
+}
+
+function colorize(img, hue) {
+    let canvas = document.createElement("canvas");
+    canvas.setAttribute('width', img.width);
+    canvas.setAttribute('height', img.height);
+
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    // RGBA (4 bytes) per pixel
+    let color = hsv2rgb(hue, 1, 1);
+
+    let imgData = ctx.getImageData(0, 0, img.width, img.height);
+    for (let i = 0; i < imgData.data.length; i += 4) {
+        imgData.data[i] = Math.floor(imgData.data[i] * color[0]);
+        imgData.data[i + 1] = Math.floor(imgData.data[i + 1] * color[1]);
+        imgData.data[i + 2] = Math.floor(imgData.data[i + 2] * color[2]);
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+
+    let colorized = new Image();
+    colorized.src = canvas.toDataURL();
+    return colorized;
+}
+
 export class Player extends Component {
     static MOVE_NONE = 0;
     static MOVE_LEFT = 1;
@@ -38,6 +69,9 @@ export class Player extends Component {
         this.animDir = 0;
 
         this.img = new Image();
+        this.img.onload = (e) => {
+            this.img = colorize(this.img, 0);
+        };
         this.img.src = "player.png";
     }
 
