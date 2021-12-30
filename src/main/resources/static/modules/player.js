@@ -49,7 +49,7 @@ export class Player extends Component {
     static MOVE_UP = 4;
     static MOVE_DOWN = 8;
 
-    constructor(game, name) {
+    constructor(game, name, pd) {
         super(game);
 
         this.name = name;
@@ -70,7 +70,7 @@ export class Player extends Component {
 
         this.img = new Image();
         this.img.onload = (e) => {
-            this.img = colorize(this.img, 0);
+            this.img = colorize(this.img, [0, 60, 120, 180, 240, 300][pd.player.color]);
         };
         this.img.src = "player.png";
     }

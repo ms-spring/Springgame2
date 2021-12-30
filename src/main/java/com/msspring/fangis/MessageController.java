@@ -18,10 +18,7 @@ import javax.validation.Configuration;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class MessageController {
@@ -53,7 +50,7 @@ public class MessageController {
     @EventListener
     public void onDisconnectEvent(SessionDisconnectEvent e) throws InvalidSessionException {
         String sessionId = e.getSessionId();
-        if(!userMapping.containsKey(sessionId)) {
+        if (!userMapping.containsKey(sessionId)) {
             throw new InvalidSessionException();
         }
         User user = userMapping.get(sessionId);
@@ -84,14 +81,17 @@ public class MessageController {
 
         Random r = new Random();
 
-        /*Set<Integer> availableColors = new HashSet<Integer>();
-        availableColors.addAll(new int[] {0, 1,2,3,4,5,6});
-        for(Player player : gameManager.getGameStates()[0].getPlayerMapping().values()) {
-            player.
-        }*/
+        List<Integer> usedColors = new ArrayList<>();
+        for (Player player : gameManager.getGameStates()[0].getPlayerMapping().values()) {
+            usedColors.add(player.getColor());
+        }
 
+        int color;
+        do {
+            color = r.nextInt(6);
+        } while (usedColors.size() < 6 && usedColors.contains(color));
 
-        gameManager.getGameStates()[0].getPlayerMapping().put(user, new Player(new Position(r.nextInt(800),r.nextInt(600)), 0, 0));
+        gameManager.getGameStates()[0].getPlayerMapping().put(user, new Player(new Position(r.nextInt(800), r.nextInt(600)), 0, color));
 
         return;
     }

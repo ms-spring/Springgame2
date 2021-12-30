@@ -105,7 +105,7 @@ export class Game extends Component {
             let player = this.players.find(p => p.name === pd.name);
             if (player === undefined) {
                 // Player with that name does not exist yet, create it
-                player = new Player(this, pd.name);
+                player = new Player(this, pd.name, pd);
                 this.players.push(player);
             }
 

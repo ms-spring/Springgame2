@@ -27,7 +27,7 @@ public class Player {
         this.move = move;
     }
 
-    public float getColor() {
+    public int getColor() {
         return color;
     }
 
