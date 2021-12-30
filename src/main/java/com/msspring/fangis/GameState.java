@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class GameState {
     private HashMap<User, Player> playerMapping;
-    private Player faenger;
+    private User faenger;
 
     public GameState() {
         playerMapping = new HashMap<>();
@@ -14,7 +14,11 @@ public class GameState {
         return playerMapping;
     }
 
-    public Player getFaenger() {
+    public User getFaenger() {
         return faenger;
+    }
+
+    public void setFaenger(User faenger) {
+        this.faenger = faenger;
     }
 }

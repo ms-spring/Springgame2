@@ -29,14 +29,29 @@ public class AlhamdulileService {
                 players.put(e.getKey().getName(), new PlayerState(e.getKey(), e.getValue()));
             }
         }
-        Player faenger = this.updateFaenger();
+        PlayerState faenger = this.updateFaenger();
+        System.out.println(faenger == null ? null : faenger.getName());
         GameStateMessage msg = new GameStateMessage(players.values().toArray(new PlayerState[0]), faenger);
         messagingTemplate.convertAndSend("/game/broadcast", msg);
     }
 
-    private Player updateFaenger() {
-        //TODO This Method should compute the actual faenger from the gamestate
-        return gameManager.getGameStates()[0].getFaenger();
+    private PlayerState updateFaenger() {
+        User currFaenger = gameManager.getGameStates()[0].getFaenger();
+        HashMap<User, Player> playerMapping = gameManager.getGameStates()[0].getPlayerMapping();
+        //set initial faenger
+        //TODO should also check if player left lobby
+        if (currFaenger == null || !playerMapping.containsKey(currFaenger)) {
+            User user = playerMapping.keySet().stream().findAny().orElse(null);
+            PlayerState initialFaenger = (user==null) ?  null : new PlayerState(user,playerMapping.get(user));
+            gameManager.getGameStates()[0].setFaenger(user);
+            return initialFaenger;
+        }
+                //check for faenger change
+        User newUser = playerMapping.keySet().stream().filter(user -> user!= currFaenger && playerMapping.get(currFaenger).computeDist(playerMapping.get(user))<=30 ).findAny().orElse(null);
+        PlayerState newFaenger = (newUser==null) ?  new PlayerState(currFaenger,playerMapping.get(newUser)) : new PlayerState(newUser,playerMapping.get(newUser));
+        gameManager.getGameStates()[0].setFaenger(newUser);
+        return newFaenger;
+
     }
 
 

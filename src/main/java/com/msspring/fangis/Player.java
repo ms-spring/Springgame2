@@ -34,4 +34,8 @@ public class Player {
     public void setColor(int color) {
         this.color = color;
     }
+
+    public double computeDist(Player p) {
+        return Math.sqrt(Math.pow(this.position.getX()-p.position.getX(),2)+ Math.pow(this.position.getY()-p.position.getY(),2));
+    };
 }

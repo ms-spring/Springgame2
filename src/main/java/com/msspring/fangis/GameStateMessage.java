@@ -2,17 +2,18 @@ package com.msspring.fangis;
 
 public class GameStateMessage {
     private PlayerState[] players;
-    private Player faenger;
+    private PlayerState faenger;
 
-    public GameStateMessage(PlayerState[] players, Player faenger) {
+    public GameStateMessage(PlayerState[] players, PlayerState faenger) {
         this.players = players;
+        this.faenger = faenger;
     }
 
     public PlayerState[] getPlayers() {
         return players;
     }
 
-    public Player getFaenger() {
+    public PlayerState getFaenger() {
         return faenger;
     }
 }
