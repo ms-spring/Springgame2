@@ -23,6 +23,8 @@ import java.util.*;
 @Controller
 public class MessageController {
     private static final Validator validator;
+    private static Random r = new Random();
+
 
     static {
         Configuration<?> config = Validation.byDefaultProvider().configure();
@@ -79,7 +81,6 @@ public class MessageController {
         userMapping.put(sessionId, user);
         //800 uf x 600 uf y
 
-        Random r = new Random();
 
         List<Integer> usedColors = new ArrayList<>();
         for (Player player : gameManager.getGameStates()[0].getPlayerMapping().values()) {
