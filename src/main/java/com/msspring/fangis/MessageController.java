@@ -92,7 +92,7 @@ public class MessageController {
             color = r.nextInt(6);
         } while (usedColors.size() < 6 && usedColors.contains(color));
 
-        gameManager.getGameStates()[0].getPlayerMapping().put(user, new Player(new Position(r.nextInt(800), r.nextInt(600)), 0, color));
+        gameManager.getGameStates()[0].getPlayerMapping().put(user, new Player(new Position(r.nextInt(800), r.nextInt(600)), 0, color, 0));
 
         return;
     }

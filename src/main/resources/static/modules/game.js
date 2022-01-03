@@ -2,6 +2,37 @@ import {Player} from "./player.js";
 import {Level} from "./level.js";
 import {Component} from "./component.js";
 
+class Particle extends Component {
+    constructor(game, x, y) {
+        super(game);
+        this.x = x + Math.random() * 50 - 25;
+        this.y = y + Math.random() * 50 - 25;
+        this.velX = Math.random() * 20 - 10;
+        this.velY = Math.random() * 20;
+        this.timeUntilDeath = Math.random();
+        this.alive = true;
+        this.size = Math.random() * 25 + 5;
+    }
+
+    update(t) {
+        super.update(t);
+        this.timeUntilDeath -= t;
+        if (this.timeUntilDeath <= 0) {
+            this.alive = false;
+        }
+        this.x += this.velX * t;
+        this.y += this.velY * t;
+        this.size += t * 10;
+    }
+
+    draw(ctx) {
+        super.draw(ctx);
+        ctx.globalAlpha = Math.sqrt(this.timeUntilDeath);
+        ctx.drawImage(this.game.particleImg, this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+        ctx.globalAlpha = 1;
+    }
+}
+
 export class Game extends Component {
     static WIDTH = 800;
     static HEIGHT = 600;
@@ -13,6 +44,11 @@ export class Game extends Component {
 
         this.level = new Level(this);
         this.players = [];
+
+        this.particles = [];
+        this.particleImg = new Image();
+        this.particleImg.src = "particle.png";
+
         this.localName = null;
 
         this.canvas = document.querySelector("#game-canvas");
@@ -73,6 +109,14 @@ export class Game extends Component {
         for (let e of this.players) {
             e.update(t);
         }
+
+        this.particles.forEach(p => p.update(t));
+        this.particles = this.particles.filter(p => p.alive);
+
+        let faenger = this.players.find(p => p.isFaenger);
+        if (faenger !== undefined && Math.random() > 0.8) {
+            this.particles.push(new Particle(this, faenger.x, faenger.y));
+        }
     }
 
     draw() {
@@ -82,6 +126,7 @@ export class Game extends Component {
         for (let e of this.players) {
             e.draw(this.ctx);
         }
+        this.particles.forEach(p => p.draw(this.ctx));
     }
 
     toNetwork() {
