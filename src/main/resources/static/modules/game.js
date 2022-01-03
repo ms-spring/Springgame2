@@ -114,7 +114,7 @@ export class Game extends Component {
         this.particles = this.particles.filter(p => p.alive);
 
         let faenger = this.players.find(p => p.isFaenger);
-        if (faenger !== undefined && Math.random() > 0.8) {
+        if (faenger !== undefined && Math.random() > 0.9) {
             this.particles.push(new Particle(this, faenger.x, faenger.y));
         }
     }
