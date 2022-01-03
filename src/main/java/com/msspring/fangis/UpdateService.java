@@ -9,13 +9,13 @@ import java.util.*;
 
 // 4/5 Sterne - Super Service!
 @Component
-public class AlhamdulileService {
+public class UpdateService {
     private Map<String, User> userMapping;
     private GameManager gameManager;
     private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    public AlhamdulileService(Map<String, User> userMapping, GameManager gameManager, SimpMessagingTemplate messagingTemplate) {
+    public UpdateService(Map<String, User> userMapping, GameManager gameManager, SimpMessagingTemplate messagingTemplate) {
         this.userMapping = userMapping;
         this.gameManager = gameManager;
         this.messagingTemplate = messagingTemplate;
@@ -44,10 +44,21 @@ public class AlhamdulileService {
             gameManager.getGameStates()[0].setFaenger(user);
             return initialFaenger;
         }
-        //check for faenger change
-        User newUser = playerMapping.keySet().stream().filter(user -> user!= currFaenger && playerMapping.get(currFaenger).computeDist(playerMapping.get(user))<=30 ).findAny().orElse(null);
-        PlayerState newFaenger = (newUser==null) ?  new PlayerState(currFaenger,playerMapping.get(newUser)) : new PlayerState(newUser,playerMapping.get(newUser));
-        gameManager.getGameStates()[0].setFaenger(newUser);
+
+        //Check for faenger change
+        User newUser = null;
+        if (System.currentTimeMillis() - gameManager.getGameStates()[0].getUpdateTime()>2000) {
+            //check for faenger change (add time constraint)
+            newUser = playerMapping.keySet().stream().filter(user -> user != currFaenger && playerMapping.get(currFaenger).computeDist(playerMapping.get(user)) <= 30).findAny().orElse(null);
+        }
+        PlayerState newFaenger = (newUser==null) ?  new PlayerState(currFaenger,playerMapping.get(currFaenger)) : new PlayerState(newUser,playerMapping.get(newUser));
+        gameManager.getGameStates()[0].setFaenger(newUser==null? currFaenger : newUser);
+
+        if(newUser!=null) {
+            //save faenger change time
+            gameManager.getGameStates()[0].setUpdateTime(System.currentTimeMillis());
+        }
+
         return newFaenger;
 
     }
