@@ -42,6 +42,28 @@ function colorize(img, hue) {
     return colorized;
 }
 
+
+function transparize(img, transparency) {
+    let canvas = document.createElement("canvas");
+    canvas.setAttribute('width', img.width);
+    canvas.setAttribute('height', img.height);
+
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+
+    let imgData = ctx.getImageData(0, 0, img.width, img.height);
+    for (let i = 3; i < imgData.data.length; i += 4) {
+        imgData.data[i] = Math.floor(imgData.data[i]*transparency);
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+
+    let colorized = new Image();
+    colorized.src = canvas.toDataURL();
+    return colorized;
+}
+
 export class Player extends Component {
     static MOVE_NONE = 0;
     static MOVE_LEFT = 1;
@@ -77,6 +99,13 @@ export class Player extends Component {
 
         this.img2 = new Image();
         this.img2.src = "player2.png"
+
+        this.img3 = new Image();
+        this.img3.onload = (e) => {
+            this.img3 = transparize(this.img3,0.5);
+        };
+        this.img3.src = "player2.png"
+
     }
 
     update(t) {
@@ -171,6 +200,7 @@ export class Player extends Component {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.animDir);
         ctx.translate(-this.x, -this.y);
+
         // Pick the animation frame based on the time 0.0 to 0.99 split over 10 frames
         ctx.drawImage(this.isFaenger ? this.img2: this.img, (Math.round(this.animTime / 0.1) % 10) * 128, 0, 128, 128, this.x - 32, this.y - 32, 64, 64);
         ctx.restore();
