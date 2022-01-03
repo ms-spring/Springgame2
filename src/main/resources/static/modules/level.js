@@ -5,11 +5,13 @@ export class Level extends Component {
     constructor(game) {
         super(game);
 
-        this.walls = [new Wall(this, 200, 300, 50, 200, Math.PI / 8),
-            new Wall(this, 260, 300, 50, 200, -Math.PI / 8),
-            new Wall(this, 500, 400, 100, 30, 0.1),
-            new Wall(this, 200, 50, 100, 30, 0),
-            new Wall(this, 350, 50, 100, 30, 0)];
+        this.walls = [new Wall(this, 500, 350, 300, 30, 0, Wall.FLAG_STATIC),
+            new Wall(this, 500, 500, 300, 30, 0, Wall.FLAG_STATIC),
+            new Wall(this, 500, 425, 120, 10, 0, Wall.FLAG_ROTATE),
+            new Wall(this, 200, 200, 200, 20, 0, Wall.FLAG_ROTATE),
+            new Wall(this, 200, 200, 200, 20, Math.PI / 2, Wall.FLAG_ROTATE),
+            new Wall(this, 600, 200, 200, 30, 0, Wall.FLAG_ROTATE),
+            new Wall(this, 500, 200, 200, 30, 0, Wall.FLAG_ROTATE)];
 
         // TODO: Add bananas
         this.bananas = [];

@@ -121,5 +121,8 @@ export class Game extends Component {
 
         // Remove all players that were not updated
         this.players = this.players.filter(p => updatedNames.includes(p.name));
+
+        // Store in each player whether they are faenger or not
+        this.players.forEach(p => p.isFaenger = p.name === (data.faenger ? data.faenger.name : null));
     }
 }

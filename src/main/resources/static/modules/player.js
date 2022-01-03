@@ -63,6 +63,7 @@ export class Player extends Component {
         this.serverY = 0;
 
         this.isLocal = false;
+        this.isFaenger = false;
         this.move = Player.MOVE_NONE;
 
         this.animTime = 0;
@@ -78,8 +79,6 @@ export class Player extends Component {
     update(t) {
         super.update(t);
 
-        const SPEED = 175, RADIUS = 15;
-
         // Determine the movement based on flags
         let dx = 0, dy = 0;
         if (this.move & Player.MOVE_LEFT) dx = -1;
@@ -93,7 +92,7 @@ export class Player extends Component {
             // Keep the animation move forward
             this.animTime += t;
             // Update the direction smoothly
-            this.animDir = lerpAngle(this.animDir, Math.atan2(dy, dx), 0.2);
+            this.animDir = lerpAngle(this.animDir, Math.atan2(dy, dx), 0.1);
         } else {
             // Walk stop animation by moving to the closest "standing" frame (0 or 5)
             let animFrame = Math.round(this.animTime / 0.1) % 10;
@@ -107,6 +106,9 @@ export class Player extends Component {
             }
         }
         this.animTime %= 1;
+
+        let punish = Math.abs(shortAngleDist(this.animDir, Math.atan2(dy, dx))) / Math.PI;
+        let SPEED = 175 * (1 - punish), RADIUS = 15;
 
         if (this.isLocal) {
             // Update x, y directly if we are controlling the local player
@@ -174,7 +176,7 @@ export class Player extends Component {
         ctx.textAlign = "center";
         ctx.textBaseline = "bottom";
         ctx.font = "10pt sans-serif";
-        ctx.fillStyle = "black";
+        ctx.fillStyle = this.isFaenger ? "red" : "black";
         ctx.fillText(this.name, this.x, this.y - 24);
     }
 
