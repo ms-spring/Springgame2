@@ -19,6 +19,8 @@ export class Game extends Component {
         this.ctx = this.canvas.getContext("2d");
         this.lastUpdate = null;
 
+        this.time = 0;
+
         this.draw();
 
         $(window).on('keydown', (e) => {
@@ -56,6 +58,7 @@ export class Game extends Component {
 
     loop(t) {
         let delta = (t - this.lastUpdate) / 1000;
+        this.time += delta;
 
         this.update(delta);
         this.draw();
