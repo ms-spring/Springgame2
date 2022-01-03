@@ -4,11 +4,13 @@ public class Player {
     private Position position;
     private int move;
     private int color;
+    private int bananas;
 
-    public Player(Position position, int move, int color) {
+    public Player(Position position, int move, int color, int bananas) {
         this.position = position;
         this.move = move;
         this.color = color;
+        this.bananas = bananas;
     }
 
     public void setPosition(Position position) {
@@ -33,6 +35,14 @@ public class Player {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public int getBananas() {
+        return bananas;
+    }
+
+    public void setBananas(int bananas) {
+        this.bananas = bananas;
     }
 
     public double computeDist(Player p) {
