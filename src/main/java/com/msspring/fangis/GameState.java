@@ -5,11 +5,13 @@ import java.util.HashMap;
 public class GameState {
     private HashMap<User, Player> playerMapping;
     private User faenger;
-    private Long updateTime;
+    private long updateTime;
+    private boolean nonfungable;
 
     public GameState() {
         playerMapping = new HashMap<>();
         updateTime = 0L;
+        nonfungable = false;
     }
 
     public HashMap<User, Player> getPlayerMapping() {
@@ -24,11 +26,19 @@ public class GameState {
         this.faenger = faenger;
     }
 
-    public Long getUpdateTime() {
+    public long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Long updateTime) {
+    public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public boolean isNonfungable() {
+        return nonfungable;
+    }
+
+    public void setNonfungable(boolean nonfungable) {
+        this.nonfungable = nonfungable;
     }
 }

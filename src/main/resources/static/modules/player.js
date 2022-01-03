@@ -86,6 +86,7 @@ export class Player extends Component {
 
         this.isLocal = false;
         this.isFaenger = false;
+        this.nofungable = false;
         this.move = Player.MOVE_NONE;
 
         this.animTime = 0;
@@ -202,7 +203,8 @@ export class Player extends Component {
         ctx.translate(-this.x, -this.y);
 
         // Pick the animation frame based on the time 0.0 to 0.99 split over 10 frames
-        ctx.drawImage(this.isFaenger ? this.img2: this.img, (Math.round(this.animTime / 0.1) % 10) * 128, 0, 128, 128, this.x - 32, this.y - 32, 64, 64);
+
+        ctx.drawImage(this.isFaenger ? (this.nonfungable ? this.img3 : this.img2): this.img, (Math.round(this.animTime / 0.1) % 10) * 128, 0, 128, 128, this.x - 32, this.y - 32, 64, 64);
         ctx.restore();
 
         // Draw the player name
@@ -219,5 +221,6 @@ export class Player extends Component {
         this.serverX = data.player.position.x;
         this.serverY = data.player.position.y;
         this.move = data.player.move;
+
     }
 }

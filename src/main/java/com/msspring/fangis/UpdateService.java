@@ -30,7 +30,7 @@ public class UpdateService {
             }
         }
         PlayerState faenger = this.updateFaenger();
-        GameStateMessage msg = new GameStateMessage(players.values().toArray(new PlayerState[0]), faenger);
+        GameStateMessage msg = new GameStateMessage(players.values().toArray(new PlayerState[0]), faenger, gameManager.getGameStates()[0].isNonfungable());
         messagingTemplate.convertAndSend("/game/broadcast", msg);
     }
 
@@ -47,9 +47,12 @@ public class UpdateService {
 
         //Check for faenger change
         User newUser = null;
+        gameManager.getGameStates()[0].setNonfungable(false);
         if (System.currentTimeMillis() - gameManager.getGameStates()[0].getUpdateTime()>2000) {
             //check for faenger change (add time constraint)
             newUser = playerMapping.keySet().stream().filter(user -> user != currFaenger && playerMapping.get(currFaenger).computeDist(playerMapping.get(user)) <= 30).findAny().orElse(null);
+        } else {
+            gameManager.getGameStates()[0].setNonfungable(true);
         }
         PlayerState newFaenger = (newUser==null) ?  new PlayerState(currFaenger,playerMapping.get(currFaenger)) : new PlayerState(newUser,playerMapping.get(newUser));
         gameManager.getGameStates()[0].setFaenger(newUser==null? currFaenger : newUser);
