@@ -1,7 +1,6 @@
-package com.msspring.fangis;
+package com.msspring.fangis.messages;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import com.msspring.fangis.gameLogic.Position;
 
 public class StatusMessage {
     private Position position;

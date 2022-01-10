@@ -1,4 +1,6 @@
-package com.msspring.fangis;
+package com.msspring.fangis.messages;
+
+import com.msspring.fangis.gameLogic.PlayerState;
 
 public class GameStateMessage {
     private PlayerState[] players;

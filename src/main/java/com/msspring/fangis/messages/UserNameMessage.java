@@ -1,4 +1,4 @@
-package com.msspring.fangis;
+package com.msspring.fangis.messages;
 
 import javax.validation.constraints.NotEmpty;
 

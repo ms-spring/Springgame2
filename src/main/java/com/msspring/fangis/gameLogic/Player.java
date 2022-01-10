@@ -1,4 +1,4 @@
-package com.msspring.fangis;
+package com.msspring.fangis.gameLogic;
 
 public class Player {
     private Position position;

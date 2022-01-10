@@ -1,4 +1,4 @@
-package com.msspring.fangis;
+package com.msspring.fangis.gameLogic;
 
 import org.springframework.stereotype.Component;
 

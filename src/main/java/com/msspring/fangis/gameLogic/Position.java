@@ -1,4 +1,4 @@
-package com.msspring.fangis;
+package com.msspring.fangis.gameLogic;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

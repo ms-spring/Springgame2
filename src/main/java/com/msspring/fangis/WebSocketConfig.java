@@ -1,5 +1,6 @@
 package com.msspring.fangis;
 
+import com.msspring.fangis.gameLogic.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
