@@ -1,8 +1,8 @@
 package com.msspring.fangis.gameLogic;
 
 public class User {
-    private String name;
-    private int lobby;
+    private final String name;
+    private final int lobby;
 
     public User(String name, int lobby) {
         this.name = name;

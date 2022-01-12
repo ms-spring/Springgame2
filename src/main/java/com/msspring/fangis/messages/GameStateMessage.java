@@ -3,9 +3,9 @@ package com.msspring.fangis.messages;
 import com.msspring.fangis.gameLogic.PlayerState;
 
 public class GameStateMessage {
-    private PlayerState[] players;
-    private PlayerState faenger;
-    private boolean nonfungable;
+    private final PlayerState[] players;
+    private final PlayerState faenger;
+    private final boolean nonfungable;
 
     public GameStateMessage(PlayerState[] players, PlayerState faenger, boolean nonfungable) {
         this.players = players;

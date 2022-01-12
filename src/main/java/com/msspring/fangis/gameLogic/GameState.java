@@ -3,7 +3,7 @@ package com.msspring.fangis.gameLogic;
 import java.util.HashMap;
 
 public class GameState {
-    private HashMap<User, Player> playerMapping;
+    private final HashMap<User, Player> playerMapping;
     private User faenger;
     private long updateTime;
     private boolean nonfungable;

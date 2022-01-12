@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 //game class implementing 3 lobbies.
 @Component
 public class GameManager {
-    private GameState[] gameStates;
+    private final GameState[] gameStates;
 
     public GameManager() {
         gameStates = new GameState[3];

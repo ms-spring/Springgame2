@@ -12,9 +12,9 @@ import java.util.*;
 // 4/5 Sterne - Super Service!
 @Component
 public class UpdateService {
-    private Map<String, User> userMapping;
-    private GameManager gameManager;
-    private SimpMessagingTemplate messagingTemplate;
+    private final Map<String, User> userMapping;
+    private final GameManager gameManager;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Autowired
     public UpdateService(Map<String, User> userMapping, GameManager gameManager, SimpMessagingTemplate messagingTemplate) {

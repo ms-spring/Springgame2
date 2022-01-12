@@ -30,8 +30,8 @@ import java.util.Random;
 @Controller
 public class MessageController {
     private static final Validator validator;
-    private static Random r = new Random();
-    Logger logger = LoggerFactory.getLogger(MessageController.class);
+    private static final Random r = new Random();
+    final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
 
     static {
@@ -41,15 +41,16 @@ public class MessageController {
         }
     }
 
-    private Map<String, User> userMapping;
-    private GameManager gameManager;
-    private SimpMessagingTemplate messagingTemplate;
+    /**
+     * Maps session IDs to User instances.
+     */
+    private final Map<String, User> userMapping;
+    private final GameManager gameManager;
 
     @Autowired
-    public MessageController(Map<String, User> userMapping, GameManager gameManager, SimpMessagingTemplate messagingTemplate) {
+    public MessageController(Map<String, User> userMapping, GameManager gameManager) {
         this.userMapping = userMapping;
         this.gameManager = gameManager;
-        this.messagingTemplate = messagingTemplate;
     }
 
     @EventListener

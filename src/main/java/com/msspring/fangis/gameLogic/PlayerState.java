@@ -1,9 +1,9 @@
 package com.msspring.fangis.gameLogic;
 
 public class PlayerState {
-    private String name;
-    private int lobby;
-    private Player player;
+    private final String name;
+    private final int lobby;
+    private final Player player;
 
     public PlayerState(User user, Player player) {
         this.name = user.getName();
