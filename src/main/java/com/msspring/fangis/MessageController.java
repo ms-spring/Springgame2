@@ -83,6 +83,7 @@ public class MessageController {
             throw new InvalidUserNameException();
         }
         int lobby = message.getLobby();
+        //TODO what happens if user did not choose lobby yet?
         if (0 < lobby && lobby >= gameManager.getGameStates().length) {
             throw new IndexOutOfBoundsException();
         }
@@ -93,7 +94,7 @@ public class MessageController {
 
 
         List<Integer> usedColors = new ArrayList<>();
-        for (Player player : gameManager.getGameStates()[0].getPlayerMapping().values()) {
+        for (Player player : gameManager.getGameStates()[lobby].getPlayerMapping().values()) {
             usedColors.add(player.getColor());
         }
 
@@ -102,7 +103,7 @@ public class MessageController {
             color = r.nextInt(6);
         } while (usedColors.size() < 6 && usedColors.contains(color));
 
-        gameManager.getGameStates()[0].getPlayerMapping().put(user, new Player(new Position(r.nextInt(800), r.nextInt(600)), 0, color, 0));
+        gameManager.getGameStates()[lobby].getPlayerMapping().put(user, new Player(new Position(r.nextInt(800), r.nextInt(600)), 0, color, 0));
 
         return;
     }

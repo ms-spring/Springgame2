@@ -5,12 +5,17 @@ public class Player {
     private int move;
     private int color;
     private int bananas;
+    private boolean isfaenger;
+    private long whenFunged;
+
 
     public Player(Position position, int move, int color, int bananas) {
         this.position = position;
         this.move = move;
         this.color = color;
         this.bananas = bananas;
+        isfaenger=false;
+        whenFunged = 0L;
     }
 
     public void setPosition(Position position) {
@@ -43,6 +48,22 @@ public class Player {
 
     public void setBananas(int bananas) {
         this.bananas = bananas;
+    }
+
+    public boolean isIsfaenger() {
+        return isfaenger;
+    }
+
+    public void setIsfaenger(boolean isfaenger) {
+        this.isfaenger = isfaenger;
+    }
+
+    public long getWhenFunged() {
+        return whenFunged;
+    }
+
+    public void setWhenFunged(long whenFunged) {
+        this.whenFunged = whenFunged;
     }
 
     public double computeDist(Player p) {
