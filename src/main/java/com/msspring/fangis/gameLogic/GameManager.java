@@ -9,7 +9,9 @@ public class GameManager {
 
     public GameManager() {
         gameStates = new GameState[3];
-        for (int i = 0; i < 3; i++) gameStates[i] = new GameState();
+        for (int i = 0; i < 3; i++) {
+            gameStates[i] = new GameState();
+        }
     }
 
     public GameState[] getGameStates() {

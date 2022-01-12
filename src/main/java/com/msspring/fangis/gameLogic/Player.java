@@ -46,6 +46,8 @@ public class Player {
     }
 
     public double computeDist(Player p) {
-        return Math.sqrt(Math.pow(this.position.getX()-p.position.getX(),2)+ Math.pow(this.position.getY()-p.position.getY(),2));
-    };
+        double dx = this.position.getX() - p.position.getX();
+        double dy = this.position.getY() - p.position.getY();
+        return Math.sqrt(dx * dx + dy * dy);
+    }
 }
