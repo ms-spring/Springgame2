@@ -11,7 +11,7 @@ public class WebsocketInterceptor extends HttpSessionHandshakeInterceptor {
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String,Object> attributes) {
-
+        //myhttpserver.isauthorized(request.token);
         return true;
     }
 

@@ -221,6 +221,6 @@ export class Player extends Component {
         this.serverX = data.player.position.x;
         this.serverY = data.player.position.y;
         this.move = data.player.move;
-
+        this.isFaenger = data.player.isfaenger;
     }
 }

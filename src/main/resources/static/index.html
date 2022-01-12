@@ -2,7 +2,11 @@
 <html>
 <head>
     <title>Java-Springman</title>
-    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
     <link href="/main.css" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
@@ -13,28 +17,25 @@
 </head>
 <body>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
-    enabled. Please enable
-    Javascript and reload this page!</h2></noscript>
-<div id="main-content" class="container">
-    <canvas id="game-canvas" width="800" height="600" style="border:solid 1px black"></canvas>
-    <div class="stage" id="stage-connect">
-        <button class="btn btn-primary btn-lg" id="btn-connect">Connect</button>
-        <button class="btn btn-secondary">Don't connect</button>
+    enabled. Please enable Javascript and reload this page!</h2></noscript>
+    <div class="stage" id="stage-join">
+        <div class="container" style="width:500px">
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Username" class="form-control" autocomplete="off"/>
+            <label for="lobby">Lobby:</label>
+            <select id="lobby" class="form-select">
+                <option value="0" selected>Lobby 1</option>
+                <option value="1">Lobby 2</option>
+                <option value="2">Lobby 3</option>
+            </select>
+            <button class="btn btn-primary btn-lg" id="btn-dont-join">Don't Join</button>
+            <button class="btn btn-light btn-sm" id="btn-join" style="cursor:none">Join</button>
+        </div>
     </div>
-    <div class="stage" id="stage-login">
-        <label for="username">Username:</label>
-        <input type="text" id="username" placeholder="Username" class="form-control" autocomplete="off"/>
-        <button class="btn btn-primary" id="btn-login">OK</button>
+    <div class="stage" id="stage-game" style="display:none">
+        <div class="d-flex align-items-center justify-content-center h-100">
+            <canvas id="game-canvas" width="800" height="600" style="border:solid 1px black"></canvas>
+        </div>
     </div>
-    <div class="stage" id="stage-lobby">
-        Choose a gameManager
-        <button class="btn btn-link" id="btn-gameManager-1">Game 1 (0/4)</button>
-        <button class="btn btn-link" id="btn-gameManager-2">Game 2 (0/4)</button>
-        <button class="btn btn-link" id="btn-gameManager-3">Game 3 (0/4)</button>
-    </div>
-    <div class="btn btn-danger center-block" id="dontconnect">
-        Don't Connect!
-    </div>
-</div>
 </body>
 </html>

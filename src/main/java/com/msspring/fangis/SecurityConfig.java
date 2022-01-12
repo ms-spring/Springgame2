@@ -14,9 +14,8 @@ public class SecurityConfig {
         return http
                 .requiresChannel(channel ->
                         channel.anyRequest().requiresSecure())
-                .authorizeRequests(authorize ->
-                        authorize.anyRequest().permitAll())
-                .build();
+                .formLogin()
+                .loginPage("/login.html").and().build();
     }
 
 }

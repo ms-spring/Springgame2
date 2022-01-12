@@ -1,9 +1,7 @@
 import {Game} from './modules/game.js'
 
 function setStage(id) {
-    $('#stage-connect').toggle(id === 'connect');
-    $('#stage-login').toggle(id === 'login');
-    $('#stage-lobby').toggle(id === 'lobby');
+    $('#stage-join').toggle(id === 'join');
     $('#stage-game').toggle(id === 'game');
 }
 
@@ -45,7 +43,7 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#username").val()}));
+    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#username").val(), 'lobby': $("#lobby").val()}));
     game.localName = $("#username").val();
 }
 
@@ -54,27 +52,14 @@ function showGreeting(message) {
 }
 
 $(window).on('load', () => {
-    setStage('login');
+    setStage('join');
     connect();
     game = new Game(stompClient);
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
-    $("#btn-connect").click(() => {
-        connect();
-        setStage('login');
-    });
-    $("#btn-login").click(() => {
+    $("#btn-join").click(() => {
         sendName();
-        setStage('lobby');
+        setStage('game');
     });
-    $("#btn-game-1").click(() => {
-        setStage('game');
-    })
-    $("#btn-game-2").click(() => {
-        setStage('game');
-    })
-    $("#btn-game-3").click(() => {
-        setStage('game');
-    })
 });

@@ -165,8 +165,8 @@ export class Game extends Component {
 
         }
 
-        //Store fungability
-        this.nonfungable = data.nonfungable;
+        //TODO: Store fungability
+        //this.nonfungable = data.nonfungable;
 
         // Store in each player whether they are locally controlled or not
         this.players.forEach(p => p.isLocal = p.name === this.localName);
@@ -175,6 +175,6 @@ export class Game extends Component {
         this.players = this.players.filter(p => updatedNames.includes(p.name));
 
         // Store in each player whether they are faenger or not
-        this.players.forEach(p => {p.isFaenger = p.name === (data.faenger ? data.faenger.name : null) ; p.nonfungable = data.nonfungable});
+        //this.players.forEach(p => {p.isFaenger = p.name === (data.faenger ? data.faenger.name : null) ; p.nonfungable = data.nonfungable});
     }
 }
