@@ -7,6 +7,8 @@ public class Player {
     private int bananas;
     private boolean isfaenger;
     private long whenFunged;
+    private boolean nonfungable;
+
 
 
     public Player(Position position, int move, int color, int bananas) {
@@ -64,6 +66,14 @@ public class Player {
 
     public void setWhenFunged(long whenFunged) {
         this.whenFunged = whenFunged;
+    }
+
+    public boolean isNonfungable() {
+        return nonfungable;
+    }
+
+    public void setNonfungable(boolean nonfungable) {
+        this.nonfungable = nonfungable;
     }
 
     public double computeDist(Player p) {

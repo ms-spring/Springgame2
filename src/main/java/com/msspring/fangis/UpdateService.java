@@ -43,46 +43,45 @@ public class UpdateService {
         for(int i = 0; i<3 ; i++) {
             List<User> currFaengers = getCurrFaenger(i);
             List<User> newFaengers = new ArrayList<>();
-            HashMap<User, Player> playerMapping = gameManager.getGameStates()[0].getPlayerMapping();
-            //check if current Faengers are still in the lobby
-            currFaengers.stream().filter(faenger -> playerMapping.containsKey(faenger));
+            HashMap<User, Player> playerMapping = gameManager.getGameStates()[i].getPlayerMapping();
             //set initial faenger if none has been set
             //TODO allow for several faengers to be set
             if (currFaengers.isEmpty()) {
                 User user = playerMapping.keySet().stream().findAny().orElse(null);
                 if(user!=null) {
-                    currFaengers.add(user);
-                }
-                continue;
-            }
-            for(User faenger : currFaengers) {
-                //check if the user is fungible (time constraint)
-                if (System.currentTimeMillis() - playerMapping.get(faenger).getWhenFunged() < 2000) {
-                    continue;
-                }
-                //Check for faenger change
-                User newUser = null;
-                //check for faenger change
-                newUser = playerMapping.keySet().stream().filter(user -> user != faenger && !playerMapping.get(user).isIsfaenger() && playerMapping.get(faenger).computeDist(playerMapping.get(user)) <= 30).findAny().orElse(null);
-                if (newUser == null) {
-                    newFaengers.add(faenger);
-                } else {
-                    newFaengers.add(newUser);
+                    newFaengers.add(user);
                 }
 
+            } else {
+                //Check for faenger change
+                for (User faenger : currFaengers) {
+                    //check if the user is fungible (time constraint)
+                    if (System.currentTimeMillis() - playerMapping.get(faenger).getWhenFunged() < 2000) {
+                        newFaengers.add(faenger);
+                        continue;
+                    }
+                    //Check for faenger change
+                    User newUser = null;
+                    //check for faenger change
+                    newUser = playerMapping.keySet().stream().filter(user -> user != faenger && !playerMapping.get(user).isIsfaenger() && playerMapping.get(faenger).computeDist(playerMapping.get(user)) <= 30).findAny().orElse(null);
+                    if (newUser == null) {
+                        newFaengers.add(faenger);
+                    } else {
+                        newFaengers.add(newUser);
+                    }
+
+                }
             }
             //now update the playerMapping
-            playerMapping.entrySet().stream().map(entry -> {
-                if (currFaengers.contains(entry.getKey())) {
+            for(Map.Entry<User, Player> entry : playerMapping.entrySet()) {
+                if (newFaengers.contains(entry.getKey())) {
                     entry.getValue().setIsfaenger(true);
                     entry.getValue().setWhenFunged(System.currentTimeMillis());
-                    return entry;
                 } else {
                     entry.getValue().setIsfaenger(false);
                     entry.getValue().setWhenFunged(0L);
-                    return entry;
                 }
-            });
+            }
 
         }
 
