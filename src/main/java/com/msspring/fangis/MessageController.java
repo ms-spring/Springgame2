@@ -7,6 +7,8 @@ import com.msspring.fangis.exceptions.InvalidUserNameException;
 import com.msspring.fangis.gameLogic.*;
 import com.msspring.fangis.messages.StatusMessage;
 import com.msspring.fangis.messages.UserNameMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.Header;
@@ -26,6 +28,7 @@ import java.util.*;
 public class MessageController {
     private static final Validator validator;
     private static Random r = new Random();
+    Logger logger = LoggerFactory.getLogger(MessageController.class);
 
 
     static {
@@ -55,7 +58,8 @@ public class MessageController {
     public void onDisconnectEvent(SessionDisconnectEvent e) throws InvalidSessionException {
         String sessionId = e.getSessionId();
         if (!userMapping.containsKey(sessionId)) {
-            throw new InvalidSessionException();
+            logger.info("User disconnected before registering to Springgame");
+            return;
         }
         User user = userMapping.get(sessionId);
         userMapping.remove(sessionId);
