@@ -217,10 +217,12 @@ export class Player extends Component {
 
     fromNetwork(data) {
         super.fromNetwork(data);
-
-        this.serverX = data.player.position.x;
-        this.serverY = data.player.position.y;
-        this.move = data.player.move;
+        if(!this.isLocal) {
+            this.serverX = data.player.position.x;
+            this.serverY = data.player.position.y;
+            this.move = data.player.move;
+        }
         this.isFaenger = data.player.isfaenger;
+        console.log("KWAKADUDU " + this.isFaenger);
     }
 }

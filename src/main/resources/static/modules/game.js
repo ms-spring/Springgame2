@@ -145,6 +145,9 @@ export class Game extends Component {
         // Keep track of all players that were contained in the update (to detect removed players)
         let updatedNames = [];
 
+        // Store in each player whether they are locally controlled or not
+        this.players.forEach(p => p.isLocal = p.name === this.localName);
+
         // Update or add new players
         for (let pd of data.players) {
             updatedNames.push(pd.name);
@@ -157,19 +160,12 @@ export class Game extends Component {
                 this.players.push(player);
             }
 
-            // Ignore updates to local player
-            if (pd.name !== this.localName) {
-                // Update the player from network in both cases
-                player.fromNetwork(pd);
-            }
-
+            player.fromNetwork(pd);
         }
 
         //TODO: Store fungability
         //this.nonfungable = data.nonfungable;
 
-        // Store in each player whether they are locally controlled or not
-        this.players.forEach(p => p.isLocal = p.name === this.localName);
 
         // Remove all players that were not updated
         this.players = this.players.filter(p => updatedNames.includes(p.name));

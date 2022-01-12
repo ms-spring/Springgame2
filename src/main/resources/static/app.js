@@ -52,6 +52,7 @@ function showGreeting(message) {
 }
 
 $(window).on('load', () => {
+    document.getElementById("username").value = Math.random();
     setStage('join');
     connect();
     game = new Game(stompClient);
