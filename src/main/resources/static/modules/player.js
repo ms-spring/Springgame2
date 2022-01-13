@@ -71,7 +71,7 @@ export class Player extends Component {
     static MOVE_UP = 4;
     static MOVE_DOWN = 8;
 
-    constructor(game, name, pd) {
+    constructor(game, name, pd, lobby) {
         super(game);
 
         this.name = name;
@@ -88,6 +88,7 @@ export class Player extends Component {
         this.isFaenger = false;
         this.nofungable = false;
         this.move = Player.MOVE_NONE;
+        number: this.lobby = lobby;
 
         this.animTime = 0;
         this.animDir = 0;
@@ -223,6 +224,7 @@ export class Player extends Component {
             this.move = data.player.move;
         }
         this.isFaenger = data.player.isfaenger;
-        console.log("KWAKADUDU " + this.isFaenger);
+        this.lobby = parseInt(data.lobby);
+        console.log("KWAKADUDU " + this.isFaenger + " + asdfasfd " + this.lobby + " asdf  " + typeof(this.lobby));
     }
 }

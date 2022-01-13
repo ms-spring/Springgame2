@@ -45,6 +45,8 @@ function disconnect() {
 function sendName() {
     stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#username").val(), 'lobby': $("#lobby").val()}));
     game.localName = $("#username").val();
+    //TODO formcheck this
+    game.localLobby = parseInt($("#lobby").val());
 }
 
 function showGreeting(message) {

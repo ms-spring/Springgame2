@@ -50,6 +50,7 @@ export class Game extends Component {
         this.particleImg.src = "particle.png";
 
         this.localName = null;
+        this.localLobby = 0;
 
         this.canvas = document.querySelector("#game-canvas");
         this.ctx = this.canvas.getContext("2d");
@@ -113,7 +114,7 @@ export class Game extends Component {
         this.particles.forEach(p => p.update(t));
         this.particles = this.particles.filter(p => p.alive);
 
-        let faenger = this.players.find(p => p.isFaenger);
+        let faenger = this.players.find(p => p.lobby === this.localLobby && p.isFaenger );
         if (faenger !== undefined && Math.random() > 0.9) {
             this.particles.push(new Particle(this, faenger.x, faenger.y));
         }
@@ -124,7 +125,10 @@ export class Game extends Component {
         this.ctx.fillRect(0, 0, 800, 600);
         this.level.draw(this.ctx);
         for (let e of this.players) {
-            e.draw(this.ctx);
+            console.log("blabla" + e.lobby + typeof(e.lobby)+ " blibli" + this.localLobby + typeof(this.localLobby));
+            if(e.lobby === this.localLobby) {
+                e.draw(this.ctx);
+            }
         }
         this.particles.forEach(p => p.draw(this.ctx));
     }
@@ -156,7 +160,7 @@ export class Game extends Component {
             let player = this.players.find(p => p.name === pd.name);
             if (player === undefined) {
                 // Player with that name does not exist yet, create it
-                player = new Player(this, pd.name, pd);
+                player = new Player(this, pd.name, pd, pd.lobby);
                 this.players.push(player);
             }
 

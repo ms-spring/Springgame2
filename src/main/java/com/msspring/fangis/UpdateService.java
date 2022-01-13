@@ -68,6 +68,7 @@ public class UpdateService {
                         newFaengers.add(faenger);
                     } else {
                         newFaengers.add(newUser);
+                        playerMapping.get(newUser).setWhenFunged(System.currentTimeMillis());
                     }
 
                 }
@@ -76,7 +77,6 @@ public class UpdateService {
             for(Map.Entry<User, Player> entry : playerMapping.entrySet()) {
                 if (newFaengers.contains(entry.getKey())) {
                     entry.getValue().setIsfaenger(true);
-                    entry.getValue().setWhenFunged(System.currentTimeMillis());
                 } else {
                     entry.getValue().setIsfaenger(false);
                     entry.getValue().setWhenFunged(0L);
